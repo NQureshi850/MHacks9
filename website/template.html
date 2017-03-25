@@ -6,7 +6,8 @@
 
         <title>QMusic Room</title>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
         <script src="https://www.gstatic.com/firebasejs/3.7.3/firebase.js"></script>
         <script src="../api.js"></script>
         <script src="js/template.js"></script>
@@ -17,19 +18,25 @@
     </head>
     <body>
         <div id="left">
-            <h1> Party Room </h1>
-            <h2> #A05JF7KD3 </h2>
+            <h1 id="room-name"> Party Room </h1>
+            <h2 id="room-code"> #A05JF7KD3 </h2>
+
             <div id="art-container">
                 <img src="img/arcadefireneonbible.jpg" />
             </div>
             <div>
-                Metadata
+                <h1 id="song-title"> Neon Bible </h1>
+                <div style="text-align: center;">
+                    <h2 id="song-artist" class="metadata"> Arcade Fire </h2>
+                    <h2 id="song-album" class="metadata"> Neon Bible </h2>
+                    <h2 id="song-votes" class="metadata"> 27 Votes</h2>
+                </div>
             </div>
 
         </div>
         <div id="right">
-            <div hidden id="Song1" >
-                <img src="http://static4.businessinsider.com/image/56c640526e97c625048b822a-480/donald-trump.jpg" />
+            <div id="Song1">
+                <div class="vote"
                 HELLO1
             </div>
             <!-- <div id="Song2" >

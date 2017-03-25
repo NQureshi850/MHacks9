@@ -1,6 +1,10 @@
 
+// libraries
 const http = require("http");
 const fs = require("fs");
+
+// local files
+const mongodb = require("./scripts/mongodb.js");
 
 // define a port we want to listen to
 const PORT=8080;

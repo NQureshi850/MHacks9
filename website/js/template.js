@@ -1,26 +1,40 @@
 /* eslint-env jquery */
-$("document").ready(function(){
-    updatestatus();
-    scrollalert();
-});
-function updatestatus(){
-    //Show number of loaded items
-    var totalItems=$("#content p").length;
-    $("#status").text("Loaded "+totalItems+" Items");
-}
-function scrollalert(){
-    var scrolltop=$("#scrollbox").attr("scrollTop");
-    var scrollheight=$("#scrollbox").attr("scrollHeight");
-    var windowheight=$("#scrollbox").attr("clientHeight");
-    var scrolloffset=20;
-    if(scrolltop>=(scrollheight-(windowheight+scrolloffset)))
+/* global database window */
+
+$("document").ready(function()
+{
+    var url = window.location.href.pathname;
+
+    //THIS SHOULD BE REMOVED LATER
+    url = "/Test";
+    console.log("rooms" + url);
+
+    var room = database.ref("rooms" + url + "/songs");
+    room.on("value", function(snapshot)
     {
-        //fetch new items
-        $("#status").text("Loading more items...");
-        $.get("new-items.html", "", function(newitems){
-            $("#content").append(newitems);
-            updatestatus();
-        });
-    }
-    setTimeout("scrollalert();", 1500);
-}
+        console.log("UPDATED!");
+        var songsObject = snapshot.val();
+        var songsArray = Object.keys(songsObject);
+        var rightContainer = $("#right");
+        var children = rightContainer.children();
+        while(children.length <= songsArray.length)
+        {
+            var copy = children[0].cloneNode(true);
+            $(copy).appendTo($("#right"));
+            children = $("#right").children();
+        }
+
+        while(children.length > songsArray.length + 1)
+        {
+            children[children.length - 1].remove();
+            children = $("#right").children();
+        }
+
+        rightContainer = $("#right");
+
+        for (var i in songsObject)
+        {
+            updateSong(rightContainer, songsObject[i]);
+        }
+    });
+});

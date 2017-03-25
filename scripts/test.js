@@ -15,8 +15,15 @@ function assert(bool, message) {
     firebase.initializeApp(config);
     const database = firebase.database();
     const ref = database.ref();
+    console.log("database started");
+
+    ref.on("value", function(snapshot) {
+        console.log("test");
+        console.log(snapshot.val());
+    });
 
     ref.once("value", function(snapshot) {
+        console.log("test");
         console.log(snapshot.val());
     });
 

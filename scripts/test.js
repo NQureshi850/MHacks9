@@ -9,7 +9,7 @@ function assert(bool, message) {
     }
 }
 
-(function(firebase) {
+(function(firebase, config) {
 
     // initialize firebase
     firebase.initializeApp(config);
@@ -20,4 +20,4 @@ function assert(bool, message) {
         console.log(snapshot.val());
     });
 
-})(firebase);
+})(firebase, config);

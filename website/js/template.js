@@ -11,6 +11,7 @@ $("document").ready(function()
 
     var room = database.ref("rooms" + url);
     var songs = database.ref("rooms" + url + "/songs");
+    var currentSong = database.ref("rooms" + url + "/currentSong");
 
     room.once("value", function(snapshot)
     {
@@ -48,5 +49,20 @@ $("document").ready(function()
 
             console.log(songElement);
         }
+    });
+
+    currentSong.on("value", function(snapshot)
+    {
+        var songData = snapshot.val();
+        $($("#art-container").children()[0]).attr("src", songData.imgSrc);
+        console.log($("#art-container").children()[0]);
+        $("#song-title").text(songData.name);
+        $("#song-artist").text(songData.artist);
+        $("#song-album").text(songData.album);
+        $("#song-votes").text(songData.votes + " Votes");
+
+        $("#art-container").css("visibility", "visible");
+        $("#song-data").css("visibility", "visible");
+        console.log($("#art-container")[0].style.visibility);
     });
 });

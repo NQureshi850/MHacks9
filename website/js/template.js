@@ -7,7 +7,6 @@ $("document").ready(function()
 
     //THIS SHOULD BE REMOVED LATER
     url = "/Test";
-    console.log("rooms" + url);
 
     var room = database.ref("rooms" + url);
     var songs = database.ref("rooms" + url + "/songs");
@@ -21,19 +20,18 @@ $("document").ready(function()
 
     songs.on("value", function(snapshot)
     {
-        console.log("UPDATED!");
         var songsObject = snapshot.val();
         var songsArray = Object.keys(songsObject);
         var rightContainer = $("#right");
         var children = rightContainer.children();
-        while(children.length <= songsArray.length)
+        while(children.length <= songsArray.length + 30)
         {
             var copy = children[0].cloneNode(true);
             $(copy).appendTo($("#right"));
             children = $("#right").children();
         }
 
-        while(children.length > songsArray.length + 1)
+        while(children.length > songsArray.length + 31)
         {
             children[children.length - 1].remove();
             children = $("#right").children();
@@ -44,10 +42,20 @@ $("document").ready(function()
         for (var i in songsObject)
         {
             var song = songsObject[i];
-            var songElement = children[song.position];
-            songElement.id = i;
+            var songElement = $(children[song.position]);
 
-            console.log(songElement);
+            songElement.attr("id", i);
+            $(songElement.children()[0].childNodes[5]).text(song.votes);
+
+            var songData = songElement.children()[1];
+            console.log(songData.childNodes[3]);
+            $(songData.childNodes[1]).text(song.name);
+            $(songData.childNodes[3]).text(song.artist);
+            $(songData.childNodes[5]).text(song.album);
+            $(songData.childNodes[7]).text(song.time);
+            $(songData.childNodes[9]).text(song.user);
+
+            songElement.show();
         }
     });
 

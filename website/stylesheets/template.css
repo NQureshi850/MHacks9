@@ -42,7 +42,8 @@ h2 {
 .list-item {
 /*    border-bottom: 1px solid black;*/
     overflow: hidden;
-    margin-bottom: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 /*    border-left: 1px solid black;*/
 }
 

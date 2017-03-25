@@ -24,16 +24,16 @@ $("document").ready(function()
         var songsArray = Object.keys(songsObject);
         var rightContainer = $("#right");
         var children = rightContainer.children();
-        while(children.length <= songsArray.length + 30)
+        while(children.length - 2 <= songsArray.length + 30)
         {
-            var copy = children[0].cloneNode(true);
+            var copy = children[1].cloneNode(true);
             $(copy).appendTo($("#right"));
             children = $("#right").children();
         }
 
-        while(children.length > songsArray.length + 31)
+        while(children.length - 2 > songsArray.length + 30)
         {
-            children[children.length - 1].remove();
+            children[children.length - 2].remove();
             children = $("#right").children();
         }
 
@@ -42,7 +42,7 @@ $("document").ready(function()
         for (var i in songsObject)
         {
             var song = songsObject[i];
-            var songElement = $(children[song.position]);
+            var songElement = $(children[song.position + 1]);
 
             songElement.attr("id", i);
             $(songElement.children()[0].childNodes[5]).text(song.votes);

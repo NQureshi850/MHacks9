@@ -1,24 +1,45 @@
-#container{
+#left {
+    width: 66%;
+    margin-left: 0;
+}
+
+#right {
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    margin: 0px auto;
+    float: left;
+    max-width: 30%;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+#container {
   position:absolute;
-  right:0%;
-  top:10%;
+  right: 0%;
+  top: 10%;
   width: 33%;
-  min-width: 500;
+  min-width: 500px;
   height: 80%;
 }
-#scrollbox{
-  position:absolute;
-  right:0;
+
+#scrollbox {
+  position: absolute;
+  right: 0;
   left: 0;
   top: 0;
   bottom: 0;
-  margin:0px auto;
-  overflow:auto; overflow-x:hidden;
+  margin: 0px auto;
+  overflow: auto;
+  overflow-x: hidden;
 }
+
 #container > p {
-    background:#eee;
-    color:#666;
-    font-family:Arial, sans-serif; font-size:0.75em;
-    padding:5px; margin:0;
-    text-align:rightright;
+    background: #eee;
+    color: #666;
+    font-family: Arial, sans-serif;
+    font-size: 0.75em;
+    padding: 5px;
+    margin: 0;
+    text-align: right;
 }

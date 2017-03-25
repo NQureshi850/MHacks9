@@ -9,8 +9,17 @@ $("document").ready(function()
     url = "/Test";
     console.log("rooms" + url);
 
-    var room = database.ref("rooms" + url + "/songs");
-    room.on("value", function(snapshot)
+    var room = database.ref("rooms" + url);
+    var songs = database.ref("rooms" + url + "/songs");
+    var currentSong = database.ref("rooms" + url + "/currentSong");
+
+    room.once("value", function(snapshot)
+    {
+        $("#room-name").text(snapshot.val().name);
+        $("#room-code").text("#" + url.substring(1));
+    });
+
+    songs.on("value", function(snapshot)
     {
         console.log("UPDATED!");
         var songsObject = snapshot.val();
@@ -34,7 +43,26 @@ $("document").ready(function()
 
         for (var i in songsObject)
         {
-            updateSong(rightContainer, songsObject[i]);
+            var song = songsObject[i];
+            var songElement = children[song.position];
+            songElement.id = i;
+
+            console.log(songElement);
         }
+    });
+
+    currentSong.on("value", function(snapshot)
+    {
+        var songData = snapshot.val();
+        $($("#art-container").children()[0]).attr("src", songData.imgSrc);
+        console.log($("#art-container").children()[0]);
+        $("#song-title").text(songData.name);
+        $("#song-artist").text(songData.artist);
+        $("#song-album").text(songData.album);
+        $("#song-votes").text(songData.votes + " Votes");
+
+        $("#art-container").css("visibility", "visible");
+        $("#song-data").css("visibility", "visible");
+        console.log($("#art-container")[0].style.visibility);
     });
 });

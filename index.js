@@ -1,36 +1,35 @@
-//const util = require("util");
-// require the HTTP module
-var http = require("http");
-var fs = require("fs");
+
+const http = require("http");
+const fs = require("fs");
 
 // define a port we want to listen to
 const PORT=8080;
 
+function createWriteToResponse(response) {
+    function writeToResponse(err, data) {
+        response.writeHead(200, {"Content-Type": "text/html"});
+        response.write(data);
+    }
+    return writeToResponse;
+}
+
 // handles requests and send response
 function handleRequest(request, response){
-    //response.end("It Works!! Path Hit: " + request.url);
     let url = request.url;
 
-    //console.log(util.inspect(url, false, null));
-    if(url == "/")
+    if (url == "/")
     {
-        fs.readFile("website\\index.html");
+        fs.readFile("website/index.html", createWriteToResponse(response));
     }
     else if(url == "/favicon.ico")
     {
-        console.log("icon empty");
+        // TODO add icon
     }
-
     else
     {
-        //console.log("here: " + url);
-        fs.readFile("website\\template.html", function(err,data)
-      {
-            response.writeHead(200, {"Content-Type": "text/html"});
-            response.write(data);
-            response.end();
-        });
+        fs.readFile("website/template.html", createWriteToResponse(response));
     }
+    response.end();
 }
 
 // create a server

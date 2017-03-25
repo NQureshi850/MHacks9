@@ -1,18 +1,56 @@
+body {
+    font-style: normal;
+    font-weight: normal;
+    font-family: "Source Sans Pro", arial, sans-serif;
+    color: #F0F0F0;
+    background-color: #0F0F0F;
+}
+
 #left {
+    height: 100%;
     width: 66%;
     margin-left: 0;
+    display: inline-block;
 }
 
 #right {
     height: 100%;
-    top: 0;
-    bottom: 0;
+    width: 33%;
     margin: 0px auto;
-    float: left;
-    max-width: 30%;
+    float: right;
+    overflow: auto;
+    overflow-x: hidden;
+    display: inline-block;
+}
+
+#art-container {
+    margin: auto;
+    width: 25%;
     overflow: auto;
     overflow-x: hidden;
 }
+
+#art-container > img {
+    width: 100%;
+}
+
+h1 {
+    font-weight: 500;
+    margin-top: 1%;
+    margin-bottom: 0;
+    text-align: center;
+    font-size: 2.6em;
+}
+
+h2 {
+    font-size: 1em;
+    margin-top: 0;
+    font-weight: 200;
+    font-style: italic;
+    text-align: center;
+}
+
+/* ----------*/
 
 #container {
   position:absolute;

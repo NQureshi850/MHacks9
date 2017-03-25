@@ -9,15 +9,22 @@ function assert(bool, message) {
     }
 }
 
-(function(firebase) {
+(function(firebase, config) {
 
     // initialize firebase
     firebase.initializeApp(config);
     const database = firebase.database();
     const ref = database.ref();
+    console.log("database started");
 
-    ref.once("value", function(snapshot) {
+    ref.on("value", function(snapshot) {
+        console.log("test");
         console.log(snapshot.val());
     });
 
-})(firebase);
+    ref.once("value", function(snapshot) {
+        console.log("test");
+        console.log(snapshot.val());
+    });
+
+})(firebase, config);

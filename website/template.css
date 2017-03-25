@@ -1,17 +1,40 @@
 #container{
-    width:400px;
-    margin:0px auto;
-    padding:40px 0;
+  position:absolute;
+  right:0%;
+  top:10%;
+  width: 33%;
+  min-width: 500;
+  height: 80%;
 }
 #scrollbox{
-    width:400px;
-    height:300px;
-    overflow:auto; overflow-x:hidden;
+  position:absolute;
+  right:0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  margin:0px auto;
+  overflow:auto; overflow-x:hidden;
 }
-#container > p{
+#container > p {
     background:#eee;
     color:#666;
     font-family:Arial, sans-serif; font-size:0.75em;
     padding:5px; margin:0;
     text-align:rightright;
+}
+#Song1 {
+  position:relative;
+  height:10%;
+  width:100%;
+  left:0;
+  margin:10px auto;
+  background:#eee;
+}
+#Song2 {
+  position:relative;
+  height:10%;
+  width:100%;
+  left:0;
+  margin:10px auto;
+  background:#eee;
 }

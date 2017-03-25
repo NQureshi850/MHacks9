@@ -1,9 +1,16 @@
+html {
+    height: 100%;
+    margin: 0;
+}
+
 body {
+    margin: 0;
     font-style: normal;
     font-weight: normal;
     font-family: "Source Sans Pro", arial, sans-serif;
     color: #F0F0F0;
-    background-color: #0F0F0F;
+    background-color: #181818;
+    height: 100%;
 }
 
 #left {
@@ -21,13 +28,13 @@ body {
     overflow: auto;
     overflow-x: hidden;
     display: inline-block;
+    /*box-shadow: -5px grey;*/
 }
 
 #art-container {
-    margin: auto;
-    width: 25%;
-    overflow: auto;
-    overflow-x: hidden;
+    margin: 0 auto;
+    max-width: 50%;
+    /*box-shadow: 5px 5px rgba(255, 255, 255, 0.5); /* x, y, blur, spread, color */
 }
 
 #art-container > img {

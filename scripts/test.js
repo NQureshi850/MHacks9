@@ -1,10 +1,23 @@
 /* global config:false, firebase:false */
 
+assert(config != undefined);
+assert(firebase != undefined);
+
 function assert(bool, message) {
     if (!bool)  {
         throw new Error(message || "");
     }
 }
 
-assert(config != undefined);
-firebase.initializeApp(config);
+(function(firebase) {
+
+    // initialize firebase
+    firebase.initializeApp(config);
+    const database = firebase.database();
+    const ref = database.ref();
+
+    ref.once("value", function(snapshot) {
+        console.log(snapshot.val());
+    });
+
+})(firebase);

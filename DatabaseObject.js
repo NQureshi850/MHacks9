@@ -18,13 +18,15 @@ class Song
         this.url = url;
         this.id = id;
         this.source = source; // 0 for youtube, 1 for soundcloud
-        this.totalUpvote = 0;
-        this.totalDownvote = 0;
+        //this.totalUpvote = 0;
+        //this.totalDownvote = 0;
+        this.totalVote = 1;
         this.user = user;
         this.length = 0;  // in seconds
         this.img = url;
     }
 
+/*
     incrementUpvote(val)
     {
         this.totalUpvote += val;
@@ -33,6 +35,12 @@ class Song
     incrementDownvote(val)
     {
         this.totalDownvote += val;
+    }
+    */
+
+    updateVote(val)
+    {
+        this.totalVote += val;
     }
 
     updateLength(newVal)
@@ -100,11 +108,18 @@ class User
     {
         this.name = name;
         this.uuid = uuid;
-        this.upvote = 0;
-        this.downvote = 0;
+        //this.upvote = 0;
+        //this.downvote = 0;
+        this.vote = 1;
         this.uploadedSongs = new Array();
     }
 
+    changeVote()
+    {
+        this.vote = this.vote * -1;
+    }
+
+    /*
     updateUpvote()
     {
         this.upvote = (this.upvote+1)%2;
@@ -114,6 +129,7 @@ class User
     {
         this.downvote = (this.downvote+1)%2;
     }
+    */
 }
 
 
@@ -121,6 +137,8 @@ const mySonglist = new Songlist();
 const myUser = new User("bob", 10);
 const song = new Song("testName", "testArtist", "testUrl", 5, 1, myUser);
 myUser.uploadedSongs.push(song);
+myUser.changeVote();
+
 
 mySonglist.addSong(song);
 

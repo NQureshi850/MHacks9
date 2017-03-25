@@ -1,26 +1,32 @@
 /* eslint-env jquery */
-$("document").ready(function(){
-    updatestatus();
-    scrollalert();
-});
-function updatestatus(){
-    //Show number of loaded items
-    var totalItems=$("#content p").length;
-    $("#status").text("Loaded "+totalItems+" Items");
-}
-function scrollalert(){
-    var scrolltop=$("#scrollbox").attr("scrollTop");
-    var scrollheight=$("#scrollbox").attr("scrollHeight");
-    var windowheight=$("#scrollbox").attr("clientHeight");
-    var scrolloffset=20;
-    if(scrolltop>=(scrollheight-(windowheight+scrolloffset)))
+/* global database window */
+
+$("document").ready(function()
+{
+    var url = window.location.href.pathname;
+
+    //THIS SHOULD BE REMOVED LATER
+    url = "/Test";
+    console.log("rooms" + url);
+
+    var room = database.ref("rooms" + url + "/songs");
+    room.on("value", function(snapshot)
     {
-        //fetch new items
-        $("#status").text("Loading more items...");
-        $.get("new-items.html", "", function(newitems){
-            $("#content").append(newitems);
-            updatestatus();
-        });
+        var songsObject = snapshot.val();
+        var rightContainer = $("#right");
+        for (var i in songsObject)
+        {
+            updateSong(rightContainer, songsObject[i]);
+        }
+    });
+});
+
+function updateSong(container, song)
+{
+    var children = container.children();
+    while(children.length <= song.position)
+    {
+        var copy = $(children[0]).clone();
+        container.add(copy);
     }
-    setTimeout("scrollalert();", 1500);
 }

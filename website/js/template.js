@@ -12,21 +12,29 @@ $("document").ready(function()
     var room = database.ref("rooms" + url + "/songs");
     room.on("value", function(snapshot)
     {
+        console.log("UPDATED!");
         var songsObject = snapshot.val();
+        var songsArray = Object.keys(songsObject);
         var rightContainer = $("#right");
+        var children = rightContainer.children();
+        while(children.length <= songsArray.length)
+        {
+            var copy = children[0].cloneNode(true);
+            $(copy).appendTo($("#right"));
+            children = $("#right").children();
+        }
+
+        while(children.length > songsArray.length + 1)
+        {
+            children[children.length - 1].remove();
+            children = $("#right").children();
+        }
+
+        rightContainer = $("#right");
+
         for (var i in songsObject)
         {
             updateSong(rightContainer, songsObject[i]);
         }
     });
 });
-
-function updateSong(container, song)
-{
-    var children = container.children();
-    while(children.length <= song.position)
-    {
-        var copy = $(children[0]).clone();
-        container.add(copy);
-    }
-}

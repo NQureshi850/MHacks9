@@ -17,13 +17,12 @@ function assert(bool, message) {
     const ref = database.ref();
     console.log("database started");
 
-    ref.on("value", function(snapshot) {
-        console.log("test");
-        console.log(snapshot.val());
-    });
+    ref.set({value: {
+        val: 2,
+        val2: 2
+    }});
 
-    ref.once("value", function(snapshot) {
-        console.log("test");
+    ref.on("value", function(snapshot) {
         console.log(snapshot.val());
     });
 

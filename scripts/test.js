@@ -3,12 +3,21 @@
 assert(config != undefined);
 assert(firebase != undefined);
 
-// initialize firebase
-firebase.initializeApp(config);
-const database = firebase.database();
-
 function assert(bool, message) {
     if (!bool)  {
         throw new Error(message || "");
     }
 }
+
+(function(firebase) {
+
+    // initialize firebase
+    firebase.initializeApp(config);
+    const database = firebase.database();
+    const ref = database.ref();
+
+    ref.once("value", function(snapshot) {
+        console.log(snapshot.val());
+    });
+
+})(firebase);

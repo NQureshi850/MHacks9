@@ -70,9 +70,7 @@ function removeUser(user) {
 
 function getUser(ws) {
     for (var i = 0; i < users.length; i++) {
-        if (id !== undefined && users[i].id === id) {
-            return users[i];
-        } else if (users[i].ws === ws) {
+        if (users[i].ws === ws) {
             return users[i];
         }
     }
@@ -145,9 +143,9 @@ wss.on("connection", function (ws) {
             if (getUser(-1, ws) == null) {
                 console.log("new join");
                 var u = new User(ws);
-                console.log(u.id);
                 scopeUser = u;
                 scopeUser.connected = true;
+                console.log(scopeUser.id);
 
                 sendMessage(ws, null, "join");
                 // sendMessage(ws, currentTime(), "sync");

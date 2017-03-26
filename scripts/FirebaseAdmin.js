@@ -11,6 +11,7 @@ var db = admin.database();
 
 module.exports.db = db;
 
+/*
 var ref = db.ref("rooms");
 ref.once("value", function(snapshot)
 {
@@ -48,3 +49,4 @@ var newPath1 = "rooms/" + [pathSong2];
 var newRef1 = db.ref(newPath1);
 
 newRef1.update({"position": position1});
+*/

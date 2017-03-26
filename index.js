@@ -154,11 +154,11 @@ wss.on("connection", function (ws) {
     });
 
     ws.on("error", function(e) {
-        console.error("[ERROR]: " + e);
+        console.error("error [ERROR]: ", e);
     });
 
     ws.on("close", function(e) {
-        console.error("[ERROR]: " + e);
+        console.error("close [ERROR]: ", e);
         // if (getUser(scopeUser.id, scopeUser.ws) !== null)
         //     disconnect(scopeUser);
     });

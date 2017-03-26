@@ -191,13 +191,22 @@ wss.on("connection", function (ws)
                             "id":testSong.id, "img":testSong.img, "name":testSong.name, "skipVotes":testSong.skipVotes,
                             "source":testSong.source, "url":testSong.url, "username":testSong.username,
                           "uuid":testSong.uuid, "votes":testSong.votes};
-                          database.ref("rooms/Test/songs/" + song.uuid).remove();
-                          database.ref("rooms/Test/currentsong").update(song);
-                          for(var j in songsArray)
+                          database.ref("rooms/Test").child("currentsong").update(song);
+                          for(var j in songsObject)
                           {
                               var testSong1 = songsObject[j];
-                              database.ref("rooms/Test/songs/" + testSong1.uuid).update({"position" : testSong1.position - 1});
+                              console.log(testSong1.id);
+                              if(testSong1.position == 1)
+                              {
+                                  nextSong.child(testSong1.id).remove();
+                              }
+                              else
+                              {
+                                  nextSong.child(testSong1.id).update({"position" : testSong1.position - 1});
+                              }
                           }
+                          console.log(song.id);
+                          //database.ref("rooms/Test/songs/" + song.uuid).remove();
                       }
                   }
                   if(song.found == 1)

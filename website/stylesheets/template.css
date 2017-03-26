@@ -35,8 +35,8 @@ h2 {
 .metadata {
     display: inline;
     text-align: center;
-    padding-left: 1em;
-    padding-right: 1em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
 }
 
 .list-item {

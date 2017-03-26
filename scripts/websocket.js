@@ -1,45 +1,9 @@
 
-// libraries
-const express = require("express");
-//const http = require("http");
-//const fs = require("fs");
-
-// local files
-//const mongodb = require("./scripts/mongodb.js");
-const firebase = require("./scripts/FirebaseAdmin.js");
-
-// define a port we want to listen to
-const PORT=8080;
-
-var app = express();
-
-var roomApp = express();
-roomApp.get("/", function (req, res) {
-    res.sendFile(__dirname + "/website/template.html");
-});
-
-app.use(express.static("public"));
-// app.use(express.static("website"));
-app.use("/room/", express.static("website"));
-app.use("/room/*", roomApp);
-
-app.listen(PORT);
-
-
-const db = firebase.db;
-
-const ref = db.ref("/rooms/Test/currentsong/");
-ref.on("value", function(snapshot) {
-    setTimeout(function () {
-        broadcast(true, "sync");
-    }, 7000);
-});
-
-
-
 // web socket
 const WebSocketServer = require("ws").Server;
-const wss = new WebSocketServer({ port: 9090});
+const wss = new WebSocketServer({ port: 8080});
+
+const firebase = require("./scripts/FirebaseAdmin.js");
 
 var users = [];
 var currentId = 1;
@@ -53,10 +17,10 @@ function User(ws) {
     users.push(this);
 }
 
-// function Message(next, text, type) {
-//     this.text = text;
-//     this.type = type;
-// }
+function Message(next, text, type) {
+    this.text = text;
+    this.type = type;
+}
 
 function removeUser(user) {
     var i = users.indexOf(user);
@@ -79,7 +43,7 @@ function getUser(id, ws) {
 }
 
 function sendMessage(ws, text, type) {
-    ws.send(JSON.stringify({type: type}));
+    ws.send(JSON.stringify(new Message(text, type)));
 }
 
 // function userList() {
@@ -125,16 +89,6 @@ wss.on("connection", function (ws) {
 
     ws.on("message", function (data) {
         var msg = JSON.parse(data);
-
-        if (msg.type === "join") {
-            var u = new User(ws);
-            scopeUser = u;
-            // sendMessage(ws, currentTime(), "sync");
-        } else if (msg.type === "ping") {
-            scopeUser.connected = true;
-        }
-
-        /*
         if (msg.type === "join") {
             var u = new User(ws);
             scopeUser = u;
@@ -146,7 +100,6 @@ wss.on("connection", function (ws) {
         } else if (msg.type === "sync") {
             broadcast(currentTime(), "sync");
         }
-        */
     });
 
     ws.on("error", function(e) {
@@ -154,7 +107,7 @@ wss.on("connection", function (ws) {
     });
 
     ws.on("close", function(e) {
-        if (getUser(scopeUser.id, scopeUser.ws) !== null)
+        if (getUser(scopeUser.name, scopeUser.id) !== null)
             disconnect(scopeUser);
     });
 });

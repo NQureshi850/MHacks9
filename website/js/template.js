@@ -40,14 +40,16 @@ function initialize()
         var rightContainer = $("#right");
         var children = rightContainer.children();
 
-        while(children.length - 2 <= songsArray.length + 30)
+        while(children.length - 3 <= songsArray.length)
         {
             var copy = children[1].cloneNode(true);
             var songData = $(copy).children()[0];
 
             $(songData.childNodes[1]).click(function()
             {
-                socket.send({"type":"vote-update", "vote":"upvote"});
+                //socket.send({"type":"vote-update", "vote":"upvote"});
+
+                var element = this.parentNode.parentNode;
 
                 var mode = (this.src.endsWith("img/upvoteClicked.png") ? -1 : 1);
                 mode += (this.parentNode.childNodes[5].src.endsWith("img/downvoteClicked.png") ? 1 : 0);
@@ -66,13 +68,15 @@ function initialize()
                     this.src = "img/upvote.png";
                 }
 
-                //songsObject[element.id].votes += mode;
-                //room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes});
+                songsObject[element.id].votes += mode;
+                room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes});
             });
 
             $(songData.childNodes[5]).click(function()
             {
-                socket.send({"type":"vote-update", "vote":"downvote"});
+                //socket.send({"type":"vote-update", "vote":"downvote"});
+
+                var element = this.parentNode.parentNode;
 
                 var mode = (this.parentNode.childNodes[1].src.endsWith("img/upvoteClicked.png") ? 1 : 0);
                 mode += (this.src.endsWith("img/downvoteClicked.png") ? -1 : 1);
@@ -91,17 +95,17 @@ function initialize()
                     this.src = "img/downvote.png";
                 }
 
-                //songsObject[element.id].votes -= mode;
-                //room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes});
+                songsObject[element.id].votes -= mode;
+                room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes});
             });
 
             $(children[1]).after(copy);
             children = $("#right").children();
         }
 
-        while(children.length - 3 > songsArray.length + 30)
+        while(children.length - 4 > songsArray.length)
         {
-            children[children.length - 2].remove();
+            children[children.length - 3].remove();
             children = $("#right").children();
         }
 
@@ -142,9 +146,9 @@ function initialize()
 
         if(songData.source == 0)
         {
-            player.loadVideoById(songData.url);
+            player.cueVideoById(songData.url);
             $("#youtubeplayer").css("visibility", "visible");
-            $("#music-player-progress-bar-value").css("width", "0%");
+            $("#music-player-progress-bar-value").width("0%");
         }
     });
 
@@ -239,18 +243,20 @@ function onStateChange(event)
 {
     if(event.data == 1)
     {
-        $("#music-player-progress-bar-value").animate({width:"100%"}, player.getDuration() * 1000);
+        //$("#music-player-progress-bar-value").animate({width:"100%"}, player.getDuration() * 1000);
         startTimer();
     }
 }
 
 function startTimer()
 {
+    $("#music-player-progress-bar-value").width((player.getCurrentTime() / player.getDuration()) * 100 + "%");
+
     var time = parseInt(player.getCurrentTime(), 10);
     $("#music-player-time-played").text(parseInt((time / 60), 10) + ":" + (time % 60 < 10 ? "0" : "") + (time % 60));
 
     time = parseInt(player.getDuration() - player.getCurrentTime(), 10);
-    if(time < 1)
+    if(player.getDuration() - player.getCurrentTime() < .2)
     {
         $("#music-player-time-played").text("0:00");
         $("#music-player-time-remaining").text("0:00");
@@ -258,7 +264,7 @@ function startTimer()
     else
     {
         $("#music-player-time-remaining").text("-" + parseInt((time / 60), 10) + ":" + (time % 60 < 10 ? "0" : "") + (time % 60));
-        setTimeout(startTimer, 1000);
+        setTimeout(function() { startTimer();}, 100);
     }
 }
 
@@ -273,7 +279,10 @@ function setupWebSocket()
 
     socket.onmessage = function(message)
     {
-        console.log(message);
+        if(message.type == "sync")
+        {
+            player.playVideo();
+        }
     };
 
     window.onbeforeunload = function()

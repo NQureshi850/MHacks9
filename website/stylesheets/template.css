@@ -40,11 +40,9 @@ h2 {
 }
 
 .list-item {
-/*    border-bottom: 1px solid black;*/
     overflow: hidden;
     margin-top: 5px;
     margin-bottom: 5px;
-/*    border-left: 1px solid black;*/
 }
 
 .item-vote {
@@ -55,15 +53,21 @@ h2 {
     width: 20px;
     min-height: 20px;
     text-align: center;
-/*    border-right: 1px solid black;*/
+}
+
+.item-thumbnail {
+    display: inline-block;
+    max-height: 40px;
+    max-width: 40px;
+    margin-left: 10px;
+    width: 50px;
+    text-align: center;
 }
 
 .item-data {
-/*    vertical-align: top;*/
     display: inline-block;
     margin: auto;
     min-height: 4em;
-/*    border-left: 1px solid black;*/
 }
 
 .item-title {
@@ -88,21 +92,6 @@ h2 {
     display: flex;
 }
 
-/*.item-artist, .item-album {
-    padding-right: 1em;
-}*/
-
-/*
-.item-user {
-    display: block;
-    display: inline;
-    font-style: italic;
-    font-size: 1.2em;
-    text-align: right;
-}*/
-
-/*.item-duration .item-user*/
-
 /* IDENTIFIERS */
 
 #left {
@@ -120,7 +109,7 @@ h2 {
     overflow: auto;
     overflow-x: hidden;
     display: inline-block;
-/*    box-shadow: -2px 0 5px 2px rgba(0, 0, 0, 0.3);*/
+/*    background-color: #484848;*/ /* For results. */
 }
 
 #art-container {
@@ -130,7 +119,6 @@ h2 {
     text-align: center;
     justify-content: center;
     overflow: hidden;
-    /*box-shadow: 5px 5px rgba(255, 255, 255, 0.5); /* x, y, blur, spread, color */
 }
 
 #art-container-image {
@@ -206,6 +194,7 @@ h2 {
 
 #music-player {
     text-align: center;
+    margin-top: 1em;
 }
 
 #music-player-play-pause, #music-player-skip-button, #music-player-skip-vote-count,
@@ -252,6 +241,16 @@ h2 {
     font-style: normal;
     font-weight: normal;
     font-family: "Source Sans Pro", arial, sans-serif;
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: 0 0 transparent;
+    border-bottom: 1px solid black;
+    outline-color: none;
+    color: #f0f0f0;
+}
+
+#searchbar:focus {
+    outline: none;
 }
 
 /* EFFECTS */

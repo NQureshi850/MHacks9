@@ -177,44 +177,32 @@ wss.on("connection", function (ws)
           if(!changed)
           {
               var database = firebase.db;
-              var song = {"found":0};
               var nextSong = database.ref("rooms/Test/songs");
-              console.log("hello");
               nextSong.once("value", function(snapshot)
               {
                   var songsObject = snapshot.val();
-                  console.log(songsObject);
                   var songsArray = Object.keys(songsObject);
-                  console.log(songsArray);
                   for(var i in songsObject)
                   {
                       var testSong = songsObject[i];
                       if(testSong.position == 1)
                       {
-                          song.album = testSong.album;
-                          song.artist = testSong.artist;
-                          song.id = testSong.id;
-                          song.img = testSong.img;
-                          song.name = testSong.name;
-                          song.skipVotes = testSong.skipVotes;
-                          song.source = testSong.source;
-                          song.time = testSong.time;
-                          song.url = testSong.url;
-                          song.username = testSong.username;
-                          song.uuid = testSong.uuid;
-                          song.votes = testSong.votes;
-                          song.found = 1;
+                          var song = {"album":testSong.album, "artist":testSong.artist,
+                            "id":testSong.id, "img":testSong.img, "name":testSong.name, "skipVotes":testSong.skipVotes,
+                            "source":testSong.source, "time": testSong.time, "url":testSong.url, "username":testSong.username,
+                          "uuid":testSong.uuid, "votes":testSong.votes};
+                          database.ref("rooms/Test/songs/" + song.uuid).remove();
+                          database.ref("rooms/Test/currentsong").update(song);
+                          for(var j in songsArray)
+                          {
+                              var testSong1 = songsObject[j];
+                              database.ref("rooms/Test/songs/" + testSong1.uuid).update({"position" : testSong1.position - 1});
+                          }
                       }
                   }
                   if(song.found == 1)
                   {
-                      database.ref("rooms/Test/songs/" + song.uuid).remove();
-                      database.ref("rooms/Test/currentsong").update(song);
-                      for(var j in songsArray)
-                      {
-                          var testSong = songsObject[j];
-                          database.ref("rooms/Test/songs/" + testSong.uuid).update({"position" : testSong.position - 1});
-                      }
+
                   }
               });
               changed = true;

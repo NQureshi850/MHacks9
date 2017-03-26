@@ -1,9 +1,12 @@
 /* eslint-env jquery */
-/* global database window */
+/* global database window WebSocket*/
 
 $("document").ready(function()
 {
-    var url = window.location.href.pathname;
+    var url = window.location.pathname;
+    url = url.substring(url.lastIndexOf("/"), url.lastIndexOf("."));
+
+    var socket = setupWebSocket();
 
     //THIS SHOULD BE REMOVED LATER
     url = "/Test";
@@ -24,6 +27,7 @@ $("document").ready(function()
         var songsArray = Object.keys(songsObject);
         var rightContainer = $("#right");
         var children = rightContainer.children();
+
         while(children.length - 1 <= songsArray.length + 30)
         {
             var copy = children[1].cloneNode(true);
@@ -33,7 +37,7 @@ $("document").ready(function()
             {
                 var element = this.parentNode.parentNode;
 
-                console.log(this.parentNode.childNodes);
+                socket.send({"type":"vote-update", "vote":"upvote"});
 
                 var mode = (this.src.endsWith("img/upvoteClicked.png") ? -1 : 1);
                 mode += (this.parentNode.childNodes[5].src.endsWith("img/downvoteClicked.png") ? 1 : 0);
@@ -52,13 +56,16 @@ $("document").ready(function()
                     this.src = "img/upvote.png";
                 }
 
-                songsObject[element.id].votes += mode;
-                room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes});
+                //songsObject[element.id].votes += mode;
+
+                //room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes});
             });
 
             $(songData.childNodes[5]).click(function()
             {
                 var element = this.parentNode.parentNode;
+
+                socket.send({"type":"vote-update", "vote":"downvote"});
 
                 var mode = (this.parentNode.childNodes[1].src.endsWith("img/upvoteClicked.png") ? 1 : 0);
                 mode += (this.src.endsWith("img/downvoteClicked.png") ? -1 : 1);
@@ -78,7 +85,7 @@ $("document").ready(function()
                 }
 
                 songsObject[element.id].votes -= mode;
-                room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes});
+                //room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes});
             });
 
             $(copy).appendTo($("#right"));
@@ -107,7 +114,7 @@ $("document").ready(function()
             $(songData.childNodes[3]).text(song.artist);
             $(songData.childNodes[5]).text(song.album);
             $(songData.childNodes[7]).text(song.time);
-            $(songData.childNodes[9]).text(song.user);
+            $(songData.childNodes[9]).text(song.username);
 
             songElement.show();
         }
@@ -126,3 +133,26 @@ $("document").ready(function()
         $("#song-data").css("visibility", "visible");
     });
 });
+
+function setupWebSocket()
+{
+    var socket = new WebSocket("ws://maxocull.com:9090");
+
+    socket.onclose = function()
+    {
+        console.log("could not connect");
+    };
+
+    socket.onmessage = function(message)
+    {
+        console.log(message);
+    };
+
+    window.onbeforeunload = function()
+    {
+        socket.onclose = function () {}; // Disable onclose event
+        socket.close();
+    };
+
+    return socket;
+}

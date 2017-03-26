@@ -24,9 +24,64 @@ $("document").ready(function()
         var songsArray = Object.keys(songsObject);
         var rightContainer = $("#right");
         var children = rightContainer.children();
-        while(children.length - 2 <= songsArray.length + 30)
+        while(children.length - 1 <= songsArray.length + 30)
         {
             var copy = children[1].cloneNode(true);
+            console.log(children);
+            var songData = $(copy).children()[0];
+
+            $(songData.childNodes[1]).click(function()
+            {
+                var element = this.parentNode.parentNode;
+
+                console.log(mode);
+
+                var mode = (this.src == "img/upvoteClicked.png" ? -1 : 1);
+                mode += (this.parentNode.childNodes[7].src == "img/downvoteClicked.png" ? 2 : 0);
+
+                if(mode == 2)
+                {
+                    this.parentNode.childNodes[7].src = "img/downvote.png";
+                }
+
+                if(mode != -1)
+                {
+                    this.src = "img/upvoteClicked.png";
+                }
+                else
+                {
+                    this.src = "img/upvote.png";
+                }
+
+                room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes + mode});
+            });
+
+            $(songData.childNodes[7]).click(function()
+            {
+                var element = this.parentNode.parentNode;
+
+                var mode = (this.parentNode.childNodes[1].src == "img/upvoteClicked.png" ? 2 : 0);
+                mode += (this.src == "img/downvoteClicked.png" ? -1 : 1);
+
+                console.log(mode);
+
+                if(mode == 2)
+                {
+                    this.parentNode.childNodes[7].src = "img/upvote.png";
+                }
+
+                if(mode != -1)
+                {
+                    this.src = "img/downvoteClicked.png";
+                }
+                else
+                {
+                    this.src = "img/downvote.png";
+                }
+
+                room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes - mode});
+            });
+
             $(copy).appendTo($("#right"));
             children = $("#right").children();
         }
@@ -47,8 +102,8 @@ $("document").ready(function()
             songElement.attr("id", i);
             $(songElement.children()[0].childNodes[5]).text(song.votes);
 
-            var songData = songElement.children()[1];
-            console.log(songData.childNodes[3]);
+            songData = songElement.children()[1];
+
             $(songData.childNodes[1]).text(song.name);
             $(songData.childNodes[3]).text(song.artist);
             $(songData.childNodes[5]).text(song.album);
@@ -63,7 +118,6 @@ $("document").ready(function()
     {
         var songData = snapshot.val();
         $($("#art-container").children()[0]).attr("src", songData.imgSrc);
-        console.log($("#art-container").children()[0]);
         $("#song-title").text(songData.name);
         $("#song-artist").text(songData.artist);
         $("#song-album").text(songData.album);
@@ -71,6 +125,5 @@ $("document").ready(function()
 
         $("#art-container").css("visibility", "visible");
         $("#song-data").css("visibility", "visible");
-        console.log($("#art-container")[0].style.visibility);
     });
 });

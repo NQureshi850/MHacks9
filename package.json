@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/NQureshi850/MHacks9/issues"
   },
-  "homepage": "https://github.com/NQureshi850/MHacks9#readme"
+  "homepage": "https://github.com/NQureshi850/MHacks9#readme",
+  "dependencies": {
+    "firebase-admin": "^4.1.3"
+  }
 }

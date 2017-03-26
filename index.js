@@ -1,14 +1,23 @@
 
 // libraries
-const http = require("http");
-const fs = require("fs");
+const express = require("express");
+//const http = require("http");
+//const fs = require("fs");
 
 // local files
-const mongodb = require("./scripts/mongodb.js");
+//const mongodb = require("./scripts/mongodb.js");
+const firebase = require("./scripts/FirebaseAdmin.js");
 
 // define a port we want to listen to
 const PORT=8080;
 
+var app = express();
+
+app.use(express.static("public"));
+
+app.listen(PORT);
+
+/*
 function createWriteToResponse(response) {
     function writeToResponse(err, data) {
         response.writeHead(200, {"Content-Type": "text/html"});
@@ -46,3 +55,4 @@ function serverListener() {
 
 // start the server
 server.listen(PORT, serverListener);
+*/

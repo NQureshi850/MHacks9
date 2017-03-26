@@ -116,6 +116,7 @@ h2 {
 
 #art-container {
     margin: auto;
+    margin-top: 10%;
     /*box-shadow: 5px 5px rgba(255, 255, 255, 0.5); /* x, y, blur, spread, color */
 }
 

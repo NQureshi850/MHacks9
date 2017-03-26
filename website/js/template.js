@@ -27,17 +27,16 @@ $("document").ready(function()
         while(children.length - 1 <= songsArray.length + 30)
         {
             var copy = children[1].cloneNode(true);
-            console.log(children);
             var songData = $(copy).children()[0];
 
             $(songData.childNodes[1]).click(function()
             {
                 var element = this.parentNode.parentNode;
 
-                console.log(mode);
+                var mode = (this.src.endsWith("img/upvoteClicked.png") ? -1 : 1);
+                mode += (this.parentNode.childNodes[7].src.endsWith("img/downvoteClicked.png") ? 1 : 0);
 
-                var mode = (this.src == "img/upvoteClicked.png" ? -1 : 1);
-                mode += (this.parentNode.childNodes[7].src == "img/downvoteClicked.png" ? 2 : 0);
+                console.log(songsObject[element.id].votes + " " + (songsObject[element.id].votes + mode));
 
                 if(mode == 2)
                 {
@@ -53,21 +52,22 @@ $("document").ready(function()
                     this.src = "img/upvote.png";
                 }
 
-                room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes + mode});
+                songsObject[element.id].votes += mode;
+                room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes});
             });
 
             $(songData.childNodes[7]).click(function()
             {
                 var element = this.parentNode.parentNode;
 
-                var mode = (this.parentNode.childNodes[1].src == "img/upvoteClicked.png" ? 2 : 0);
-                mode += (this.src == "img/downvoteClicked.png" ? -1 : 1);
+                var mode = (this.parentNode.childNodes[1].src.endsWith("img/upvoteClicked.png") ? 1 : 0);
+                mode += (this.src.endsWith("img/downvoteClicked.png") ? -1 : 1);
 
                 console.log(mode);
 
                 if(mode == 2)
                 {
-                    this.parentNode.childNodes[7].src = "img/upvote.png";
+                    this.parentNode.childNodes[1].src = "img/upvote.png";
                 }
 
                 if(mode != -1)
@@ -79,7 +79,8 @@ $("document").ready(function()
                     this.src = "img/downvote.png";
                 }
 
-                room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes - mode});
+                songsObject[element.id].votes -= mode;
+                room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes});
             });
 
             $(copy).appendTo($("#right"));

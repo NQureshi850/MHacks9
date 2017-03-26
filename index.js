@@ -196,7 +196,14 @@ wss.on("connection", function (ws)
                           {
                               var testSong1 = songsObject[j];
                               console.log(testSong1.id);
-                              nextSong.child(testSong1.id).update({"position" : testSong1.position - 1});
+                              if(testSong1.position == 1)
+                              {
+                                  nextSong.child(testSong1.id).remove();
+                              }
+                              else
+                              {
+                                  nextSong.child(testSong1.id).update({"position" : testSong1.position - 1});
+                              }
                           }
                           console.log(song.id);
                           //database.ref("rooms/Test/songs/" + song.uuid).remove();

@@ -191,14 +191,14 @@ wss.on("connection", function (ws)
                             "id":testSong.id, "img":testSong.img, "name":testSong.name, "skipVotes":testSong.skipVotes,
                             "source":testSong.source, "url":testSong.url, "username":testSong.username,
                           "uuid":testSong.uuid, "votes":testSong.votes};
-                          database.ref("rooms/Test/currentsong").update(song);
+                          database.ref("rooms/Test").child("currentsong").update(song);
                           for(var j in songsObject)
                           {
                               var testSong1 = songsObject[j];
-                              console.log(testSong1.uuid);
-                              nextSong.child(testSong1.uuid).update({"position" : testSong1.position - 1});
+                              console.log(testSong1.id);
+                              nextSong.child(testSong1.id).update({"position" : testSong1.position - 1});
                           }
-                          console.log(song.uuid);
+                          console.log(song.id);
                           //database.ref("rooms/Test/songs/" + song.uuid).remove();
                       }
                   }

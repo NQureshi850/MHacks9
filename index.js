@@ -145,6 +145,7 @@ wss.on("connection", function (ws) {
         if (msg.type === "join") {
             console.log("msg join");
             var u = new User(ws);
+            console.log(u.id);
             scopeUser = u;
             scopeUser.connected = true;
 

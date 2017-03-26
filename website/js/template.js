@@ -2,6 +2,7 @@
 /* global database window WebSocket YT*/
 var player;
 var shouldMute = true;
+var socket;
 
 function start()
 {
@@ -118,6 +119,7 @@ function initialize()
             var songElement = $(children[song.position + 1]);
 
             songElement.attr("id", i);
+            console.log(songElement);
             $(songElement.children()[0].childNodes[3]).text(song.votes);
 
             songData = songElement.children()[1];
@@ -260,6 +262,8 @@ function startTimer()
     {
         $("#music-player-time-played").text("0:00");
         $("#music-player-time-remaining").text("0:00");
+
+        socket.send(JSON.stringify({"type":"video-ended"}));
     }
     else
     {
@@ -270,19 +274,24 @@ function startTimer()
 
 function setupWebSocket()
 {
-    var socket = new WebSocket("ws://maxocull.com:9090");
+    socket = new WebSocket("ws://maxocull.com:9090");
+
+    socket.onopen = function()
+    {
+        console.log("sent");
+        socket.send(JSON.stringify({"type":"join"}));
+    };
 
     socket.onclose = function()
     {
         console.log("could not connect");
     };
 
-    socket.onmessage = function(message)
+    socket.onmessage = function(e)
     {
+        var message = JSON.parse(e.data);
         if(message.type == "sync")
-        {
             player.playVideo();
-        }
     };
 
     window.onbeforeunload = function()

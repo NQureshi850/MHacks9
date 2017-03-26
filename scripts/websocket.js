@@ -1,7 +1,7 @@
 
 // web socket
 const WebSocketServer = require("ws").Server;
-const wss = new WebSocketServer({ port: 8080});
+const wss = new WebSocketServer({ port: 9090});
 
 const firebase = require("./scripts/FirebaseAdmin.js");
 
@@ -83,6 +83,7 @@ function currentTime() {
     return null;
 }
 
+var changed = false;
 
 wss.on("connection", function (ws) {
     var scopeUser;
@@ -93,7 +94,50 @@ wss.on("connection", function (ws) {
             var u = new User(ws);
             scopeUser = u;
             sendMessage(ws, currentTime(), "sync");
-        } else if (msg.type === "ping") {
+        } else if(msg.type === "video-ended") {
+            if(!changed)
+            {
+                var song = {"found":0};
+                var nextSong = database.ref("rooms/Test/songs");
+                nextSong.once("value", function(snapshot)
+                {
+                    var songsObject = snapshot.val();
+                    var songsArray = Object.keys(songsObject);
+                    for(var i in songsArray)
+                    {
+                        var testSong = songsObject[i];
+                        if(testSong.position == 1)
+                        {
+                            song.album = testSong.album;
+                            song.artist = testSong.artist;
+                            song.id = testSong.id;
+                            song.img = testSong.img;
+                            song.name = testSong.name;
+                            song.skipVotes = testSong.skipVotes;
+                            song.source = testSong.source;
+                            song.time = testSong.time;
+                            song.url = testSong.url;
+                            song.username = testSong.username;
+                            song.uuid = testSong.uuid;
+                            song.votes = testSong.votes;
+                            song.found = 1;
+                        }
+                    }
+                    if(song.found == 1)
+                    {
+                        database.ref("rooms/Test/songs/" + song.uuid).remove();
+                        database.ref("rooms/Test/currentSong").update(song);
+                        for(var j in songsArray)
+                        {
+                            var testSong = songsObject[j];
+                            database.ref("rooms/Test/songs/" + testSong.uuid).update({"position" : testSong.position - 1});
+                        }
+                    }
+                });
+                changed = true;
+                setTimeout(function() {changed = false;}, 5000);
+            }
+        }  else if (msg.type === "ping") {
             scopeUser.connected = true;
         } else if (msg.type === "next") {
             broadcast(true, "next");

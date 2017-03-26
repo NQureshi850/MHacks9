@@ -150,7 +150,8 @@ function initialize()
     $("#right").scroll(function(e)
     {
         console.log(e);
-        var scrollData = $(this).data('scroll');
+        var scrollData = $(this).data("scroll");
+        console.log(scrollData);
 
         if(scrollData.y > $(this).scrollTop()){
             console.log("this");
@@ -205,7 +206,6 @@ function onYouTubeIframeAPIReady()
 function onPlayerReady(event)
 {
     start();
-    console.log("this");
 }
 
 function setupWebSocket()

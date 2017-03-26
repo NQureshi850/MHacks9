@@ -18,7 +18,9 @@ app.use(express.static("public"));
 
 app.listen(PORT);
 
-serverSocket = new WebSocketServer({ port: 9090});
+var users;
+
+var serverSocket = new WebSocketServer({ port: 9090});
 
 serverSocket.on('connection', function (socket)
 {
@@ -29,19 +31,19 @@ serverSocket.on('connection', function (socket)
         console.log(data);
     });
 
-    socket.on('error', function(e)
+    socket.on("error", function(e)
     {
-        console.error('[ERROR]: ' + e);
+        console.error("[ERROR]: " + e);
     });
 
-    ws.on('close', function(e)
+    socket.on("close", function(e)
     {
         if (getUser(scopeUser.name, scopeUser.id) !== null)
         {
             disconnect(scopeUser);
         }
     });
-};
+});
 
 function disconnect(user)
 {
@@ -60,6 +62,22 @@ function disconnect(user)
 
     console.log('User ' + name + ' has disconnected.');
     console.log('Users online: ' + userList() + '.');
+}
+
+function getUser(name, id, ws)
+{
+    for (var i = 0; i < users.length; i++)
+    {
+        if (name !== undefined && id !== undefined && users[i].name === name && users[i].id === id)
+        {
+            return users[i];
+        }
+        else if (users[i].ws === ws)
+        {
+            return users[i];
+        }
+    }
+    return null;
 }
 
 function removeUser(user)

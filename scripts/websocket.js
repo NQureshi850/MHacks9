@@ -1,46 +1,9 @@
 
-// libraries
-const express = require("express");
-//const http = require("http");
-//const fs = require("fs");
-
-// local files
-//const mongodb = require("./scripts/mongodb.js");
-const firebase = require("./scripts/FirebaseAdmin.js");
-
-// define a port we want to listen to
-const PORT=8880;
-
-var app = express();
-
-var roomApp = express();
-roomApp.get("/", function (req, res) {
-    res.sendFile(__dirname + "/website/template.html");
-});
-
-app.use(express.static("public"));
-// app.use(express.static("website"));
-app.use("/room/", express.static("website"));
-app.use("/room/*", roomApp);
-
-app.listen(PORT);
-
-
-const db = firebase.db;
-
-const ref = db.ref("/rooms/Test/currentsong/");
-ref.on("value", function(snapshot) {
-    console.log("current song changed");
-    setTimeout(function () {
-        broadcast(true, "sync");
-    }, 7000);
-});
-
-
-
 // web socket
 const WebSocketServer = require("ws").Server;
-const wss = new WebSocketServer({ port: 9090});
+const wss = new WebSocketServer({ port: 8080});
+
+const firebase = require("./scripts/FirebaseAdmin.js");
 
 var users = [];
 var currentId = 1;
@@ -54,10 +17,10 @@ function User(ws) {
     users.push(this);
 }
 
-// function Message(next, text, type) {
-//     this.text = text;
-//     this.type = type;
-// }
+function Message(next, text, type) {
+    this.text = text;
+    this.type = type;
+}
 
 function removeUser(user) {
     var i = users.indexOf(user);
@@ -68,19 +31,19 @@ function removeUser(user) {
     }
 }
 
-// function getUser(id, ws) {
-//     for (var i = 0; i < users.length; i++) {
-//         if (id !== undefined && users[i].id === id) {
-//             return users[i];
-//         } else if (users[i].ws === ws) {
-//             return users[i];
-//         }
-//     }
-//     return null;
-// }
+function getUser(id, ws) {
+    for (var i = 0; i < users.length; i++) {
+        if (id !== undefined && users[i].id === id) {
+            return users[i];
+        } else if (users[i].ws === ws) {
+            return users[i];
+        }
+    }
+    return null;
+}
 
 function sendMessage(ws, text, type) {
-    ws.send(JSON.stringify({type: type}));
+    ws.send(JSON.stringify(new Message(text, type)));
 }
 
 // function userList() {
@@ -96,7 +59,6 @@ function sendMessage(ws, text, type) {
 // }
 
 function broadcast(text, type) {
-    console.log("broadcast type of message: " + type);
     users.forEach(function (client) {
         sendMessage(client.ws, text, type);
     });
@@ -123,22 +85,10 @@ function currentTime() {
 
 
 wss.on("connection", function (ws) {
-    console.log("connection");
     var scopeUser;
 
     ws.on("message", function (data) {
         var msg = JSON.parse(data);
-        console.log("connection message type: " + msg);
-
-        if (msg.type === "join") {
-            var u = new User(ws);
-            scopeUser = u;
-            // sendMessage(ws, currentTime(), "sync");
-        } else if (msg.type === "ping") {
-            // scopeUser.connected = true;
-        }
-
-        /*
         if (msg.type === "join") {
             var u = new User(ws);
             scopeUser = u;
@@ -150,7 +100,6 @@ wss.on("connection", function (ws) {
         } else if (msg.type === "sync") {
             broadcast(currentTime(), "sync");
         }
-        */
     });
 
     ws.on("error", function(e) {
@@ -158,9 +107,8 @@ wss.on("connection", function (ws) {
     });
 
     ws.on("close", function(e) {
-        console.error("[ERROR]: " + e);
-        // if (getUser(scopeUser.id, scopeUser.ws) !== null)
-        //     disconnect(scopeUser);
+        if (getUser(scopeUser.name, scopeUser.id) !== null)
+            disconnect(scopeUser);
     });
 });
 
@@ -174,8 +122,8 @@ setInterval(function () {
         if (u.connected === false) {
             disconnect(u);
         } else {
-            // u.connected = false;
-            // sendMessage(u.ws, "ping");
+            u.connected = false;
+            sendMessage(u.ws, "ping");
         }
     }
 }, 1000);

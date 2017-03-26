@@ -25,7 +25,7 @@ exports.Song = class Song
         this.skipVotes = 0;
         this.uuid = user.uuid;
         this.username = user.name;
-        this.time = 0;  // in seconds
+        //this.time = 0;
         this.img = image;
     }
 
@@ -39,10 +39,11 @@ exports.Song = class Song
         this.votes += val;
     }
 
+/*
     updateLength(newVal)
     {
         this.time = newVal;
-    }
+    }*/
 
     // debug purposes mostly
     printSong()

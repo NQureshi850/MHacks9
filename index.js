@@ -79,6 +79,10 @@ function removeUser(user) {
 //     return null;
 // }
 
+function sendStringifiedMessage(ws, message) {
+    ws.send(message);
+}
+
 function sendMessage(ws, text, type) {
     ws.send(JSON.stringify({type: type}));
 }
@@ -97,8 +101,10 @@ function sendMessage(ws, text, type) {
 
 function broadcast(text, type) {
     console.log("broadcast type of message: " + type);
+    var message = JSON.stringify({type: type});
     users.forEach(function (client) {
-        sendMessage(client.ws, text, type);
+        // sendMessage(client.ws, text, type);
+        sendStringifiedMessage(client.ws, message);
     });
 }
 

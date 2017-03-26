@@ -79,30 +79,6 @@ h2 {
     font-size: 0.8em;
 }
 
-.music-player-play-pause, .music-player-skip-button, .music-player-skip-vote,
-.music-player-time-played, .music-player-progress-bar,
-.music-player-time-remaining {
-    display: inline-block;
-}
-
-.music-player-skip-button, .music-player-time-indicator, .music-player-mute {
-    margin-left: 1em;
-}
-
-.music-player-time-indicator {
-    margin-top: 1em;
-    display: block;
-}
-
-.music-player-progress-bar {
-    width: 50%;
-    height: 0.2em;
-    background-color: #000000;
-    margin-bottom: 0.25em;
-    margin-right: 1em;
-    margin-left: 1em;
-}
-
 /*.item-artist, .item-album {
     padding-right: 1em;
 }*/
@@ -206,6 +182,34 @@ h2 {
 
 #music-player {
     text-align: center;
+}
+
+#music-player-play-pause, #music-player-skip-button, #music-player-skip-vote-count,
+#music-player-time-played, #music-player-progress-bar,
+#music-player-time-remaining {
+    display: inline-block;
+}
+
+#music-player-skip-vote-count {
+    vertical-align: middle;
+}
+
+#music-player-skip-button, #music-player-time-indicator, #music-player-mute {
+    margin-left: 1em;
+}
+
+#music-player-time-indicator {
+    margin-top: 1em;
+    display: block;
+}
+
+#music-player-progress-bar {
+    width: 50%;
+    height: 0.2em;
+    background-color: #000000;
+    margin-bottom: 0.25em;
+    margin-right: 1em;
+    margin-left: 1em;
 }
 
 #searchbar-container {

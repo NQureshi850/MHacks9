@@ -40,14 +40,16 @@ function initialize()
         var rightContainer = $("#right");
         var children = rightContainer.children();
 
-        while(children.length - 2 <= songsArray.length + 30)
+        while(children.length - 3 <= songsArray.length)
         {
             var copy = children[1].cloneNode(true);
             var songData = $(copy).children()[0];
 
             $(songData.childNodes[1]).click(function()
             {
-                socket.send({"type":"vote-update", "vote":"upvote"});
+                //socket.send({"type":"vote-update", "vote":"upvote"});
+
+                var element = this.parentNode.parentNode;
 
                 var mode = (this.src.endsWith("img/upvoteClicked.png") ? -1 : 1);
                 mode += (this.parentNode.childNodes[5].src.endsWith("img/downvoteClicked.png") ? 1 : 0);
@@ -66,13 +68,15 @@ function initialize()
                     this.src = "img/upvote.png";
                 }
 
-                //songsObject[element.id].votes += mode;
-                //room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes});
+                songsObject[element.id].votes += mode;
+                room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes});
             });
 
             $(songData.childNodes[5]).click(function()
             {
-                socket.send({"type":"vote-update", "vote":"downvote"});
+                //socket.send({"type":"vote-update", "vote":"downvote"});
+
+                var element = this.parentNode.parentNode;
 
                 var mode = (this.parentNode.childNodes[1].src.endsWith("img/upvoteClicked.png") ? 1 : 0);
                 mode += (this.src.endsWith("img/downvoteClicked.png") ? -1 : 1);
@@ -91,17 +95,17 @@ function initialize()
                     this.src = "img/downvote.png";
                 }
 
-                //songsObject[element.id].votes -= mode;
-                //room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes});
+                songsObject[element.id].votes -= mode;
+                room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes});
             });
 
             $(children[1]).after(copy);
             children = $("#right").children();
         }
 
-        while(children.length - 3 > songsArray.length + 30)
+        while(children.length - 4 > songsArray.length)
         {
-            children[children.length - 2].remove();
+            children[children.length - 3].remove();
             children = $("#right").children();
         }
 
@@ -142,7 +146,7 @@ function initialize()
 
         if(songData.source == 0)
         {
-            player.loadVideoById(songData.url);
+            player.cueVideoById(songData.url);
             $("#youtubeplayer").css("visibility", "visible");
             $("#music-player-progress-bar-value").width("0%");
         }
@@ -237,7 +241,6 @@ function onPlayerReady(event)
 
 function onStateChange(event)
 {
-    console.log(event.data);
     if(event.data == 1)
     {
         //$("#music-player-progress-bar-value").animate({width:"100%"}, player.getDuration() * 1000);
@@ -276,7 +279,10 @@ function setupWebSocket()
 
     socket.onmessage = function(message)
     {
-        console.log(message);
+        if(message.type == "sync")
+        {
+            player.playVideo();
+        }
     };
 
     window.onbeforeunload = function()

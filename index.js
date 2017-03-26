@@ -30,6 +30,7 @@ const db = firebase.db;
 
 const ref = db.ref("/rooms/Test/currentsong/");
 ref.on("value", function(snapshot) {
+    console.log("current song changed");
     setTimeout(function () {
         broadcast(true, "sync");
     }, 7000);
@@ -95,6 +96,7 @@ function sendMessage(ws, text, type) {
 // }
 
 function broadcast(text, type) {
+    console.log("broadcast type of message: " + type);
     users.forEach(function (client) {
         sendMessage(client.ws, text, type);
     });
@@ -121,10 +123,12 @@ function currentTime() {
 
 
 wss.on("connection", function (ws) {
+    console.log("connection");
     var scopeUser;
 
     ws.on("message", function (data) {
         var msg = JSON.parse(data);
+        console.log("connection message type: " + msg);
 
         if (msg.type === "join") {
             var u = new User(ws);

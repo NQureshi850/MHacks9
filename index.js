@@ -176,6 +176,7 @@ wss.on("connection", function (ws)
         {
           if(!changed)
           {
+              var database = firebase.db;
               var song = {"found":0};
               var nextSong = database.ref("rooms/Test/songs");
               nextSong.once("value", function(snapshot)

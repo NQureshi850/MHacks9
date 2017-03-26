@@ -286,13 +286,9 @@ function setupWebSocket()
 
     socket.onmessage = function(e)
     {
-        console.log("received");
         var message = JSON.parse(e.data);
-        console.log(message);
         if(message.type == "sync")
-        {
             player.playVideo();
-        }
     };
 
     window.onbeforeunload = function()

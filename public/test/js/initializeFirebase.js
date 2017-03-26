@@ -1,7 +1,4 @@
-/* eslint-env jquery */
-/* global firebase */
-
-var database;
+/* global firebase:false */
 
 const config = {
     apiKey: "AIzaSyB1ud8zoaq0Asex1cgfl_mF5lf7A4JxBJw",
@@ -11,7 +8,5 @@ const config = {
     messagingSenderId: "474432084634"
 };
 
-console.log("jiiini");
-
+// initialize firebase
 firebase.initializeApp(config);
-database = firebase.database();

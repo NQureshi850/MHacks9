@@ -7,6 +7,19 @@ admin.initializeApp({
     databaseURL: "https://mhacks9-177a8.firebaseio.com/"
 });
 
+/*
+var uid = [];
+for (var i = 0; i < uid.length; i++) {
+    admin.auth().deleteUser(uid[i])
+        .then(function() {
+            console.log("Successfully deleted user");
+        })
+        .catch(function(error) {
+            console.log("Error deleting user:", error);
+        });
+}
+*/
+
 var db = admin.database();
 var ref = db.ref("rooms");
 ref.once("value", function(snapshot)

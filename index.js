@@ -1,6 +1,6 @@
 
 // libraries
-const WebSocketServer = require("ws").Server;
+// const WebSocketServer = require("ws").Server;
 const express = require("express");
 //const http = require("http");
 //const fs = require("fs");
@@ -14,15 +14,24 @@ const PORT=8080;
 
 var app = express();
 
+var roomApp = express();
+roomApp.get("/", function (req, res) {
+    res.sendFile(__dirname + "/website/template.html");
+});
+
 app.use(express.static("public"));
+// app.use(express.static("website"));
+app.use("/room/", express.static("website"));
+app.use("/room/*", roomApp);
 
 app.listen(PORT);
 
+/*
 var users;
 
 var serverSocket = new WebSocketServer({ port: 9090});
 
-serverSocket.on("connected", function (socket)
+serverSocket.on("connection", function (socket)
 {
     var scopeUser;
 
@@ -57,6 +66,9 @@ function disconnect(user)
     }
 
     removeUser(user);
+
+    console.log("User " + name + " has disconnected.");
+    console.log("Users online: " + userList() + ".");
 }
 
 function getUser(name, id, ws)
@@ -85,6 +97,7 @@ function removeUser(user)
         users.splice(i, 1);
     }
 }
+*/
 
 /*
 function createWriteToResponse(response) {

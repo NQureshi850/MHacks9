@@ -106,7 +106,7 @@ function disconnect(user) {
     try {
         user.ws.close();
     } catch (e) {
-        console.error("[ERROR]: " + e);
+        console.error("disconnect [ERROR]: " + e);
     }
     removeUser(user);
 }
@@ -127,8 +127,9 @@ wss.on("connection", function (ws) {
     var scopeUser;
 
     ws.on("message", function (data) {
+        console.log("connection message type1: ", data);
         var msg = JSON.parse(data);
-        console.log("connection message type: " + msg);
+        console.log("connection message type2: ", msg);
 
         if (msg.type === "join") {
             var u = new User(ws);
@@ -165,7 +166,7 @@ wss.on("connection", function (ws) {
 });
 
 wss.on("error", function(e) {
-    console.error("[ERROR]: " + e);
+    console.error("error [ERROR]: " + e);
 });
 
 setInterval(function () {

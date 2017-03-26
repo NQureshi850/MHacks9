@@ -208,7 +208,7 @@ function initialize()
 
     $("#music-player-skip-button").click(function()
     {
-        socket.send({"type":"skip-vote-update"});
+        socket.send(JSON.stringify({"type":"skip-vote-update"}));
     });
 }
 

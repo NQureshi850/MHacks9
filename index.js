@@ -156,6 +156,7 @@ wss.on("connection", function (ws)
 
     ws.on("message", function (data)
     {
+        console.log(data);
         var msg = JSON.parse(data);
         console.log("connection message type2: ", msg);
         console.log("connection message readyState: ", ws.readyState);

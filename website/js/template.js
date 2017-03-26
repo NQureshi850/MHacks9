@@ -250,6 +250,7 @@ function onStateChange(event)
         //$("#music-player-progress-bar-value").animate({width:"100%"}, player.getDuration() * 1000);
         startTimer();
     }
+    console.log(event.data + " " + doPause);
     if(event.data == 3 && doPause)
     {
         player.pauseVideo();

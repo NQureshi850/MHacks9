@@ -115,7 +115,13 @@ function init() {
 
 function getUsername(user, callback) {
     let db = firebase.database();
-    let ref = db.ref("/users/uid/" + user.uid);
+    let dynamRef = "/users/uid";
+
+    if (user.isAnonymous) {
+        dynamRef = "/anon/uid";
+    }
+
+    let ref = db.ref(dynamRef + user.uid);
 
     console.log("test");
 

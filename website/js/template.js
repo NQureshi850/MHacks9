@@ -33,14 +33,14 @@ $("document").ready(function()
             {
                 var element = this.parentNode.parentNode;
 
-                var mode = (this.src.endsWith("img/upvoteClicked.png") ? -1 : 1);
-                mode += (this.parentNode.childNodes[7].src.endsWith("img/downvoteClicked.png") ? 1 : 0);
+                console.log(this.parentNode.childNodes);
 
-                console.log(songsObject[element.id].votes + " " + (songsObject[element.id].votes + mode));
+                var mode = (this.src.endsWith("img/upvoteClicked.png") ? -1 : 1);
+                mode += (this.parentNode.childNodes[5].src.endsWith("img/downvoteClicked.png") ? 1 : 0);
 
                 if(mode == 2)
                 {
-                    this.parentNode.childNodes[7].src = "img/downvote.png";
+                    this.parentNode.childNodes[5].src = "img/downvote.png";
                 }
 
                 if(mode != -1)
@@ -56,14 +56,12 @@ $("document").ready(function()
                 room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes});
             });
 
-            $(songData.childNodes[7]).click(function()
+            $(songData.childNodes[5]).click(function()
             {
                 var element = this.parentNode.parentNode;
 
                 var mode = (this.parentNode.childNodes[1].src.endsWith("img/upvoteClicked.png") ? 1 : 0);
                 mode += (this.src.endsWith("img/downvoteClicked.png") ? -1 : 1);
-
-                console.log(mode);
 
                 if(mode == 2)
                 {
@@ -101,7 +99,7 @@ $("document").ready(function()
             var songElement = $(children[song.position + 1]);
 
             songElement.attr("id", i);
-            $(songElement.children()[0].childNodes[5]).text(song.votes);
+            $(songElement.children()[0].childNodes[3]).text(song.votes);
 
             songData = songElement.children()[1];
 

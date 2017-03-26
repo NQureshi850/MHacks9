@@ -150,6 +150,11 @@ function initialize()
     $("#right").scroll(function(e)
     {
         console.log(e);
+        var scrollData = $(this).data('scroll');
+
+        if(scrollData.y > $(this).scrollTop()){
+            console.log("this");
+        }
     });
 
     $("#music-player-mute").click(function()

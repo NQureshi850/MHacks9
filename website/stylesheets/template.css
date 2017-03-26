@@ -206,6 +206,7 @@ h2 {
 
 #music-player {
     text-align: center;
+    margin-top: 1em;
 }
 
 #music-player-play-pause, #music-player-skip-button, #music-player-skip-vote-count,
@@ -252,6 +253,16 @@ h2 {
     font-style: normal;
     font-weight: normal;
     font-family: "Source Sans Pro", arial, sans-serif;
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: 0 0 transparent;
+    border-bottom: 1px solid black;
+    outline-color: none;
+    color: #f0f0f0;
+}
+
+#searchbar:focus {
+    outline: none;
 }
 
 /* EFFECTS */

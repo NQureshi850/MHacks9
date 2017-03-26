@@ -10,7 +10,7 @@
         <script src="https://www.gstatic.com/firebasejs/3.7.3/firebase.js"></script>
 
         <!-- Google API -->
-        <script>
+        <!--<script>
             window.youtubeDataAPIStatus = 'loading';
             // Load up the Youtube Data API
             function GoogleAPILoadCallback() {
@@ -25,7 +25,7 @@
                     window.youtubeDataAPIStatus = 'ready';
                 });
             }
-        </script>
+        </script>-->
 
         <script src="https://www.youtube.com/player_api"></script>
         <script src="js/api.js"></script>
@@ -52,16 +52,16 @@
             <div style="visibility:hidden;" id="song-data">
                 <h1 id="song-title"> </h1>
                 <div style="text-align: center;">
-                    <h2 id="song-artist" class="metadata"> </h2>
-                    <h2 id="song-album" class="metadata"> </h2>
-                    <h2 id="song-votes" class="metadata"> </h2>
+                    <h2 style="display: none;" id="song-artist" class="metadata"> </h2>
+                    <h2 style="display: none;" id="song-album" class="metadata"> </h2>
+                    <h2 style="display: none;" id="song-votes" class="metadata"> </h2>
                 </div>
             </div>
             <div id="music-player">
                 <!--<input id="music-player-play-pause" type="image" src="img/play.png" alt="Play" width="40" height="40"/>-->
-                <input id="music-player-skip-button" type="image" src="img/skip.png" alt="Skip" width="30" height="30"/>
-                    <div id="music-player-skip-vote-count"> 7 </div>
-                <input id="music-player-mute" type="image" src="img/unmute.png" alt="Mute" width="30" height="30" />
+                <input style="display: none;" id="music-player-skip-button" type="image" src="img/skip.png" alt="Skip" width="30" height="30"/>
+                <div style="display: none;" id="music-player-skip-vote-count"> 7 </div>
+                <input id="music-player-mute" type="image" src="img/mute.png" alt="Mute" width="30" height="30" />
                 <div id="music-player-time-indicator">
                     <div id="music-player-time-played"> 0:37 </div>
                     <div id="music-player-progress-bar">
@@ -74,7 +74,7 @@
         </div>
         <div id="right">
             <div id="empty-top-list-item"> </div>
-            <div id="clone-song" class="list-item">
+            <div hidden id="clone-song" class="list-item">
                 <div class="item-vote">
                     <input class="item-vote-up" type="image" src="img/upvote.png" alt="+" width="20" height="10">
                     <div class="item-vote-count"> 314 </div>
@@ -89,6 +89,7 @@
                 </div>
             </div>
             <div id="empty-bottom-list-item"> </div>
+            <div id="search-results">
         </div>
     </body>
 </html>

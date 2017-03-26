@@ -10,6 +10,7 @@ exports.theObject = class databaseObject
     }
 };
 
+//represents a Song and actions towards it
 exports.Song = class Song
 {
     constructor(album, artist, name, url, id, source, user, image)
@@ -58,6 +59,7 @@ exports.Song = class Song
     }
 };
 
+//represents a queue of songs with the ability to access all songs
 exports.Songlist = class Songlist
 {
     constructor()
@@ -110,6 +112,7 @@ exports.Songlist = class Songlist
     }
 };
 
+//represents a User and its main behaviors
 exports.User = class User
 {
     constructor(name, uuid)

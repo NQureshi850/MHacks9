@@ -21,7 +21,7 @@ var path2 = "Test/users/" + [userInfo2.uuid];
 ref.update({[path1]: userInfo});
 ref.update({[path2]: userInfo2});
 
-var songInfo = new roomInfo.Song("Love", "Arcade Fire", "Neon bible", "www.kys.com", "39fjq012j39gjwq9d", 0, userInfo, "img/arcadefireneonbible.jpg");
+var songInfo = new roomInfo.Song("Love", "Arcade Fire", "Neon Bible", "https://www.youtube.com/watch?v=ZZ5LpwO-An4", "39fjq012j39gjwq9d", 0, userInfo, "img/arcadefireneonbible.jpg");
 var pathSong1 = "Test/songs/" + [songInfo.id];
 ref.update({[pathSong1]: songInfo});
 

@@ -3,8 +3,18 @@
 var player;
 var shouldMute = true;
 
-$("document").ready(function()
+function start()
 {
+    $("document").ready(initialize);
+}
+
+function initialize()
+{
+    if(shouldMute)
+    {
+        player.mute();
+    }
+
     var url = window.location.pathname;
     url = url.substring(url.lastIndexOf("/"), url.lastIndexOf("."));
 
@@ -55,8 +65,6 @@ $("document").ready(function()
                 {
                     this.src = "img/upvote.png";
                 }
-
-                player.pauseVideo();
 
                 //songsObject[element.id].votes += mode;
                 //room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes});
@@ -132,41 +140,36 @@ $("document").ready(function()
         $("#art-container").css("visibility", "visible");
         $("#song-data").css("visibility", "visible");
 
-        player = new YT.Player("youtubeplayer", {
-            //height: "10%",
-            //width: "20%",
-            videoId: "79jgy0pJciw",
-            playerVars: {
-                "allowsInlineMediaPlayback":0,
-                "autoplay": 1,
-                "cc_load_policy":0,
-                "controls": 0,
-                "disablekb":1,
-                "enablejsapi":1,
-                "fs":0,
-                "iv_load_policy":3,
-                "modestbranding":1,
-                "rel" : 0,
-                "showinfo":0,
-            },
-            events: {
-                "onReady": onPlayerReady
-            }
-        });
+        if(songData.source == 0)
+        {
+            player.loadVideoById(songData.url);
+            $("#youtubeplayer").css("visibility", "visible");
+        }
+    });
+
+    $("#right").scroll(function(e)
+    {
+        console.log(e);
+        var scrollData = $(this).data('scroll');
+
+        if(scrollData.y > $(this).scrollTop()){
+            console.log("this");
+        }
     });
 
     $("#music-player-mute").click(function()
     {
         shouldMute = !shouldMute;
-        $("#music-player-mute").attr("src", (shouldMute ? "mute" : "unmute"));
-        console.log("this");
+
+        $("#music-player-mute").attr("src", (shouldMute ? "img/mute.png" : "img/unmute.png"));
+
         if(shouldMute)
         {
             player.mute();
         }
         else
         {
-            player.unmute();
+            player.unMute();
         }
     });
 
@@ -174,11 +177,35 @@ $("document").ready(function()
     {
         socket.send({"type":"skip-vote-update"});
     });
-});
+}
+
+function onYouTubeIframeAPIReady()
+{
+    player = new YT.Player("youtubeplayer", {
+        playerVars: {
+            "allowsInlineMediaPlayback":0,
+            "autoplay": 1,
+            "cc_load_policy":0,
+            "controls": 0,
+            "disablekb":1,
+            "enablejsapi":1,
+            "fs":0,
+            "iv_load_policy":3,
+            "modestbranding":1,
+            "rel" : 0,
+            "showinfo":0,
+        },
+        events: {
+            "onReady": onPlayerReady
+        }
+    });
+    $("#youtubeplayer").css("visibility", "hidden");
+}
 
 function onPlayerReady(event)
 {
-    event.target.mute();
+    start();
+    console.log("this");
 }
 
 function setupWebSocket()

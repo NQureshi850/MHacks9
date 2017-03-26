@@ -24,18 +24,19 @@ $("document").ready(function()
         var songsArray = Object.keys(songsObject);
         var rightContainer = $("#right");
         var children = rightContainer.children();
-        while(children.length - 1 <= songsArray.length)
+        while(children.length - 1 <= songsArray.length + 30)
         {
             var copy = children[1].cloneNode(true);
-            console.log(children);
             var songData = $(copy).children()[0];
 
             $(songData.childNodes[1]).click(function()
             {
                 var element = this.parentNode.parentNode;
 
-                var mode = (this.src == "img/upvoteClicked.png" ? -1 : 1);
-                mode += (this.parentNode.childNodes[7].src == "img/downvoteClicked.png" ? 2 : 0);
+                var mode = (this.src.endsWith("img/upvoteClicked.png") ? -1 : 1);
+                mode += (this.parentNode.childNodes[7].src.endsWith("img/downvoteClicked.png") ? 1 : 0);
+
+                console.log(songsObject[element.id].votes + " " + (songsObject[element.id].votes + mode));
 
                 if(mode == 2)
                 {
@@ -51,19 +52,22 @@ $("document").ready(function()
                     this.src = "img/upvote.png";
                 }
 
-                room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes + mode});
+                songsObject[element.id].votes += mode;
+                room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes});
             });
 
             $(songData.childNodes[7]).click(function()
             {
                 var element = this.parentNode.parentNode;
 
-                var mode = (this.parentNode.childNodes[1].src == "img/upvoteClicked.png" ? 2 : 0);
-                mode += (this.src == "img/downvoteClicked.png" ? -1 : 1);
+                var mode = (this.parentNode.childNodes[1].src.endsWith("img/upvoteClicked.png") ? 1 : 0);
+                mode += (this.src.endsWith("img/downvoteClicked.png") ? -1 : 1);
+
+                console.log(mode);
 
                 if(mode == 2)
                 {
-                    this.parentNode.childNodes[7].src = "img/upvote.png";
+                    this.parentNode.childNodes[1].src = "img/upvote.png";
                 }
 
                 if(mode != -1)
@@ -75,14 +79,15 @@ $("document").ready(function()
                     this.src = "img/downvote.png";
                 }
 
-                room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes - mode});
+                songsObject[element.id].votes -= mode;
+                room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes});
             });
 
             $(copy).appendTo($("#right"));
             children = $("#right").children();
         }
 
-        while(children.length - 2 > songsArray.length)
+        while(children.length - 2 > songsArray.length + 30)
         {
             children[children.length - 2].remove();
             children = $("#right").children();
@@ -114,7 +119,6 @@ $("document").ready(function()
     {
         var songData = snapshot.val();
         $($("#art-container").children()[0]).attr("src", songData.imgSrc);
-        console.log($("#art-container").children()[0]);
         $("#song-title").text(songData.name);
         $("#song-artist").text(songData.artist);
         $("#song-album").text(songData.album);
@@ -122,6 +126,5 @@ $("document").ready(function()
 
         $("#art-container").css("visibility", "visible");
         $("#song-data").css("visibility", "visible");
-        console.log($("#art-container")[0].style.visibility);
     });
 });

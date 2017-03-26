@@ -8,6 +8,9 @@ admin.initializeApp({
 });
 
 var db = admin.database();
+
+module.exports.db = db;
+
 var ref = db.ref("rooms");
 ref.once("value", function(snapshot)
 {

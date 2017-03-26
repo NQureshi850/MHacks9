@@ -1,4 +1,4 @@
-class DatabaseObject
+class databaseObject
 {
     constructor(title, code, arraySong, arrayUser)
     {
@@ -11,32 +11,25 @@ class DatabaseObject
 
 class Song
 {
-    constructor(name, artist, url, id, source, user)
+    constructor(album, artist, name, url, id, source, user)
     {
-        this.name = name;
+        this.album = album;
         this.artist = artist;
+        this.name = name;
         this.url = url;
         this.id = id;
         this.source = source; // 0 for youtube, 1 for soundcloud
-        //this.totalUpvote = 0;
-        //this.totalDownvote = 0;
         this.totalVote = 1;
+        this.skipVotes = 0;
         this.user = user;
-        this.length = 0;  // in seconds
+        this.time = 0;  // in seconds
         this.img = url;
     }
 
-/*
-    incrementUpvote(val)
+    updateSkipVote(val)
     {
-        this.totalUpvote += val;
+        this.skipVotes += val;
     }
-
-    incrementDownvote(val)
-    {
-        this.totalDownvote += val;
-    }
-    */
 
     updateVote(val)
     {
@@ -45,22 +38,23 @@ class Song
 
     updateLength(newVal)
     {
-        this.length = newVal;
+        this.time = newVal;
     }
 
     // debug purposes mostly
     printSong()
     {
       //  name, artist, url, id, source, user;
-        console.log(this.name);
+        console.log(this.album);
         console.log(this.artist);
+        console.log(this.name);
         console.log(this.url);
         console.log(this.id);
         console.log(this.source);
         console.log(this.user);
-        console.log("Upvote: " + this.totalUpvote + " Downvote: " + this.totalDownvote);
+        console.log("Total Votes: " + this.totalVote);
     }
-}
+}7;
 
 class Songlist
 {
@@ -68,6 +62,25 @@ class Songlist
     {
         this.songlist = new Array();
         this.currentSongList = 0;
+        this.currTimer = 0;
+        //firebase.database().ref().set(new Song());
+    }
+
+    startSong()
+    {
+        if(this.currentSong() != null)
+        {
+            setTimeout(this.nextSong, this.currentSong.length * 1000);
+        }
+    }
+
+    nextSong()
+    {
+        this.removeSong();
+        if(this.currentSong() != null)
+        {
+            this.startSong();
+        }
     }
 
     //removes from top of q
@@ -90,15 +103,8 @@ class Songlist
     // debug purposes mostly
     printSong()
     {
-      //  name, artist, url, id, source, user;
         var curr = this.currentSong();
-        console.log(curr.name);
-        console.log(curr.artist);
-        console.log(curr.url);
-        console.log(curr.id);
-        console.log(curr.source);
-        console.log(curr.user);
-        console.log("Upvote: " + curr.totalUpvote + " Downvote: " + curr.totalDownvote);
+        curr.printSong();
     }
 }
 
@@ -108,28 +114,21 @@ class User
     {
         this.name = name;
         this.uuid = uuid;
-        //this.upvote = 0;
-        //this.downvote = 0;
         this.vote = 1;
+        this.skipVote = 0;
         this.uploadedSongs = new Array();
     }
 
     changeVote()
     {
         this.vote = this.vote * -1;
+
     }
 
-    /*
-    updateUpvote()
+    changeSkipVote()
     {
-        this.upvote = (this.upvote+1)%2;
+        this.skipVote = (this.skipVote + 1)%2;
     }
-
-    updateDownvote()
-    {
-        this.downvote = (this.downvote+1)%2;
-    }
-    */
 }
 
 
@@ -138,7 +137,7 @@ const myUser = new User("bob", 10);
 const song = new Song("testName", "testArtist", "testUrl", 5, 1, myUser);
 myUser.uploadedSongs.push(song);
 myUser.changeVote();
-
+song.updateVote(myUser.skipVote * 2 - 1);
 
 mySonglist.addSong(song);
 

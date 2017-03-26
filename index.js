@@ -45,7 +45,7 @@ serverSocket.on("connection", function (socket)
         console.error("[ERROR]: " + e);
     });
 
-    socket.on("close", function(e)
+    socket.on("close", function()
     {
         if (getUser(scopeUser.name, scopeUser.id) !== null)
         {
@@ -56,8 +56,6 @@ serverSocket.on("connection", function (socket)
 
 function disconnect(user)
 {
-    var name = user.name;
-
     try
     {
         user.ws.close();

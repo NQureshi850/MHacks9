@@ -1,9 +1,10 @@
 /* eslint-env jquery */
-/* global database window WebSocket*/
+/* global database window WebSocket YT*/
+var player;
+var shouldMute = true;
 
 $("document").ready(function()
 {
-
     var url = window.location.pathname;
     url = url.substring(url.lastIndexOf("/"), url.lastIndexOf("."));
 
@@ -14,7 +15,7 @@ $("document").ready(function()
 
     var room = database.ref("rooms" + url);
     var songs = database.ref("rooms" + url + "/songs");
-    var currentSong = database.ref("rooms" + url + "/currentSong");
+    var currentSong = database.ref("rooms" + url + "/currentsong");
 
     room.once("value", function(snapshot)
     {
@@ -29,15 +30,13 @@ $("document").ready(function()
         var rightContainer = $("#right");
         var children = rightContainer.children();
 
-        while(children.length - 1 <= songsArray.length + 30)
+        while(children.length - 2 <= songsArray.length + 30)
         {
             var copy = children[1].cloneNode(true);
             var songData = $(copy).children()[0];
 
             $(songData.childNodes[1]).click(function()
             {
-                var element = this.parentNode.parentNode;
-
                 socket.send({"type":"vote-update", "vote":"upvote"});
 
                 var mode = (this.src.endsWith("img/upvoteClicked.png") ? -1 : 1);
@@ -57,15 +56,14 @@ $("document").ready(function()
                     this.src = "img/upvote.png";
                 }
 
-                //songsObject[element.id].votes += mode;
+                player.pauseVideo();
 
+                //songsObject[element.id].votes += mode;
                 //room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes});
             });
 
             $(songData.childNodes[5]).click(function()
             {
-                var element = this.parentNode.parentNode;
-
                 socket.send({"type":"vote-update", "vote":"downvote"});
 
                 var mode = (this.parentNode.childNodes[1].src.endsWith("img/upvoteClicked.png") ? 1 : 0);
@@ -85,15 +83,15 @@ $("document").ready(function()
                     this.src = "img/downvote.png";
                 }
 
-                songsObject[element.id].votes -= mode;
+                //songsObject[element.id].votes -= mode;
                 //room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes});
             });
 
-            $(copy).appendTo($("#right"));
+            $(children[1]).after(copy);
             children = $("#right").children();
         }
 
-        while(children.length - 2 > songsArray.length + 30)
+        while(children.length - 3 > songsArray.length + 30)
         {
             children[children.length - 2].remove();
             children = $("#right").children();
@@ -104,6 +102,7 @@ $("document").ready(function()
         for (var i in songsObject)
         {
             var song = songsObject[i];
+
             var songElement = $(children[song.position + 1]);
 
             songElement.attr("id", i);
@@ -115,7 +114,7 @@ $("document").ready(function()
             $(songData.childNodes[3]).text(song.artist);
             $(songData.childNodes[5]).text(song.album);
             $(songData.childNodes[7]).text(song.time);
-            $(songData.childNodes[9]).text(song.username);
+            $(songData.childNodes[9]).text(song.name);
 
             songElement.show();
         }
@@ -128,12 +127,59 @@ $("document").ready(function()
         $("#song-title").text(songData.name);
         $("#song-artist").text(songData.artist);
         $("#song-album").text(songData.album);
-        $("#song-votes").text(songData.votes + " Votes");
+        $("#music-player-skip-vote-count").text(songData.skipVotes);
 
         $("#art-container").css("visibility", "visible");
         $("#song-data").css("visibility", "visible");
+
+        player = new YT.Player("youtubeplayer", {
+            //height: "10%",
+            //width: "20%",
+            videoId: "79jgy0pJciw",
+            playerVars: {
+                "allowsInlineMediaPlayback":0,
+                "autoplay": 1,
+                "cc_load_policy":0,
+                "controls": 0,
+                "disablekb":1,
+                "enablejsapi":1,
+                "fs":0,
+                "iv_load_policy":3,
+                "modestbranding":1,
+                "rel" : 0,
+                "showinfo":0,
+            },
+            events: {
+                "onReady": onPlayerReady
+            }
+        });
+    });
+
+    $("#music-player-mute").click(function()
+    {
+        shouldMute = !shouldMute;
+        $("#music-player-mute").attr("src", (shouldMute ? "mute" : "unmute"));
+        console.log("this");
+        if(shouldMute)
+        {
+            player.mute();
+        }
+        else
+        {
+            player.unmute();
+        }
+    });
+
+    $("#music-player-skip-button").click(function()
+    {
+        socket.send({"type":"skip-vote-update"});
     });
 });
+
+function onPlayerReady(event)
+{
+    event.target.mute();
+}
 
 function setupWebSocket()
 {

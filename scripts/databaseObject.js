@@ -1,4 +1,5 @@
-class databaseObject
+var exports = module.exports = {};
+exports.theObject = class databaseObject
 {
     constructor(title, code, arraySong, arrayUser)
     {
@@ -7,11 +8,11 @@ class databaseObject
         this.songQueue = arraySong;
         this.arrayUser = arrayUser;
     }
-}
+};
 
-class Song
+exports.Song = class Song
 {
-    constructor(album, artist, name, url, id, source, user)
+    constructor(album, artist, name, url, id, source, user, image)
     {
         this.album = album;
         this.artist = artist;
@@ -19,11 +20,12 @@ class Song
         this.url = url;
         this.id = id;
         this.source = source; // 0 for youtube, 1 for soundcloud
-        this.totalVote = 1;
+        this.votes = 1;
         this.skipVotes = 0;
-        this.user = user;
+        this.uuid = user.uuid;
+        this.username = user.name;
         this.time = 0;  // in seconds
-        this.img = url;
+        this.img = image;
     }
 
     updateSkipVote(val)
@@ -33,7 +35,7 @@ class Song
 
     updateVote(val)
     {
-        this.totalVote += val;
+        this.votes += val;
     }
 
     updateLength(newVal)
@@ -52,11 +54,11 @@ class Song
         console.log(this.id);
         console.log(this.source);
         console.log(this.user);
-        console.log("Total Votes: " + this.totalVote);
+        console.log("votes: " + this.votes);
     }
-}7;
+};
 
-class Songlist
+exports.Songlist = class Songlist
 {
     constructor()
     {
@@ -106,9 +108,9 @@ class Songlist
         var curr = this.currentSong();
         curr.printSong();
     }
-}
+};
 
-class User
+exports.User = class User
 {
     constructor(name, uuid)
     {
@@ -129,9 +131,9 @@ class User
     {
         this.skipVote = (this.skipVote + 1)%2;
     }
-}
+};
 
-
+/*
 const mySonglist = new Songlist();
 const myUser = new User("bob", 10);
 const song = new Song("testName", "testArtist", "testUrl", 5, 1, myUser);
@@ -142,3 +144,4 @@ song.updateVote(myUser.skipVote * 2 - 1);
 mySonglist.addSong(song);
 
 mySonglist.printSong();
+*/

@@ -142,7 +142,7 @@ wss.on("connection", function (ws) {
         console.log("connection message readyState: ", ws.readyState);
 
         if (msg.type === "join") {
-            if (getUser(-1, ws) != null) {
+            if (getUser(-1, ws) == null) {
                 console.log("new join");
                 var u = new User(ws);
                 console.log(u.id);

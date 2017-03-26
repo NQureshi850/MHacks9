@@ -118,6 +118,7 @@ function initialize()
             var songElement = $(children[song.position + 1]);
 
             songElement.attr("id", i);
+            console.log(songElement);
             $(songElement.children()[0].childNodes[3]).text(song.votes);
 
             songData = songElement.children()[1];
@@ -272,13 +273,22 @@ function setupWebSocket()
 {
     var socket = new WebSocket("ws://maxocull.com:9090");
 
+    socket.onopen = function()
+    {
+        console.log("sent");
+        socket.send(JSON.stringify({"type":"join"}));
+    };
+
     socket.onclose = function()
     {
         console.log("could not connect");
     };
 
-    socket.onmessage = function(message)
+    socket.onmessage = function(e)
     {
+        console.log("received");
+        var message = JSON.parse(e.data);
+        console.log(message);
         if(message.type == "sync")
         {
             player.playVideo();

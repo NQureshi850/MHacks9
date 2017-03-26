@@ -1,27 +1,59 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <title>QMusic Room</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <script src="js/template.js"></script>
-    <link rel="stylesheet" type="test/css" href="stylesheets/template.css" />
-  </head>
-  <body>
-    <div id="container">
-        <div id="scrollbox" >
-            <div id="content" >
-              <div id="Song1" >
-                <img src="http://static4.businessinsider.com/image/56c640526e97c625048b822a-480/donald-trump.jpg" />
-                HELLO1
-              </div>
-              <div id="Song2" >
-                HELLO2
-              </div>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>QMusic Room</title>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+        <script src="https://www.gstatic.com/firebasejs/3.7.3/firebase.js"></script>
+        <script src="../api.js"></script>
+        <script src="js/template.js"></script>
+
+        <!-- TODO: Slim the fonts down (currently all) -->
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="stylesheets/template.css" />
+    </head>
+    <body>
+        <div id="left">
+            <h1 id="room-name">  </h1>
+            <h2 id="room-code">  </h2>
+
+            <div style="visibility:hidden;" id="art-container">
+                <img/>
+            </div>
+            <div style="visibility:hidden;" id="song-data">
+                <h1 id="song-title"> </h1>
+                <div style="text-align: center;">
+                    <h2 id="song-artist" class="metadata"> </h2>
+                    <h2 id="song-album" class="metadata"> </h2>
+                    <h2 id="song-votes" class="metadata"> </h2>
+                </div>
+            </div>
+            <div id="music-player">
+              <!-- TODO: INSERT CODE FOR NICE LOOKING MINIMALIST PLAYBACK BAR -->
+            </div>
+
+        </div>
+        <div id="right">
+            <div id="empty-list-item"> </div>
+            <div hidden id="clone-song" class="list-item">
+                <div class="item-vote">
+                    <input class="item-vote-up" type="image" src="img/upvote.png" alt="+" width="20" height="10"> <!-- TODO: Include image -->
+                    <div class="item-vote-count"> 314 </div>
+                    <input class="item-vote-down" type="image" src="img/downvote.png" alt="-" width="20" height="10"> <!-- TODO: Include image -->
+                </div>
+                <div class="item-data">
+                    <div class="item-title" style="text-align:justify;"> Run </div>
+                    <div class="item-artist"> Alison Wonderland </div> /
+                    <div class="item-album"> No Album </div> /
+                    <div class="item-duration"> 3:38 </div> /
+                    <div class="item-user"> kleclain </div>
+                    <!--<div class="item-uuid" style="display: none;"> a95jf9302kf92 </div> -->
+                </div>
             </div>
         </div>
-    </div>
-  </body>
+    </body>
 </html>

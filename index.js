@@ -179,11 +179,14 @@ wss.on("connection", function (ws)
               var database = firebase.db;
               var song = {"found":0};
               var nextSong = database.ref("rooms/Test/songs");
+              console.log("hello");
               nextSong.once("value", function(snapshot)
               {
                   var songsObject = snapshot.val();
+                  console.log(songsObject);
                   var songsArray = Object.keys(songsObject);
-                  for(var i in songsArray)
+                  console.log(songsArray);
+                  for(var i in songsObject)
                   {
                       var testSong = songsObject[i];
                       if(testSong.position == 1)

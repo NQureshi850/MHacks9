@@ -147,14 +147,39 @@ function initialize()
         }
     });
 
+    var offTop = true;
+    var offBot = true;
+
+    $("#searchbar-container").css("borderTop", "1px solid black");
+
     $("#right").scroll(function(e)
     {
-        console.log(e);
-        var scrollData = $(this).data("scroll");
-        console.log(scrollData);
+        if($(this).scrollTop() > 50)
+        {
+            if(offTop)
+            {
+                $("#room-info").css("border-bottom", "1px solid black");
+                offTop = false;
+            }
+        }
+        else if(!offTop)
+        {
+            $("#room-info").css("border-bottom", "");
+            offTop = true;
+        }
 
-        if(scrollData.y > $(this).scrollTop()){
-            console.log("this");
+        if(this.scrollHeight - 700 < $(this).scrollTop())
+        {
+            if(offBot)
+            {
+                $("#searchbar-container").css("borderTop", "");
+                offBot = false;
+            }
+        }
+        else if(!offBot)
+        {
+            $("#searchbar-container").css("borderTop", "1px solid black");
+            offBot = true;
         }
     });
 

@@ -169,7 +169,6 @@ h2 {
     width: 31.5%;
     overflow: hidden;
     background-color: #181818;
-    border-bottom: 1px solid black;
     /* TODO: Covers scroll bar, fix that. */
     /* Update: Fix the hack. */
 }
@@ -200,7 +199,7 @@ h2 {
 }
 
 #empty-bottom-list-item {
-    height: 2.6em;
+    height: 3em;
     margin-bottom: 5%;
     margin-top: 1%;
 }
@@ -244,7 +243,6 @@ h2 {
     width: 31.5%;
     overflow: hidden;
     background-color: #181818;
-    border-top: 1px solid black;
 }
 
 #searchbar {

@@ -189,7 +189,7 @@ wss.on("connection", function (ws)
                       {
                           var song = {"album":testSong.album, "artist":testSong.artist,
                             "id":testSong.id, "img":testSong.img, "name":testSong.name, "skipVotes":testSong.skipVotes,
-                            "source":testSong.source, "time": testSong.time, "url":testSong.url, "username":testSong.username,
+                            "source":testSong.source, "url":testSong.url, "username":testSong.username,
                           "uuid":testSong.uuid, "votes":testSong.votes};
                           database.ref("rooms/Test/songs/" + song.uuid).remove();
                           database.ref("rooms/Test/currentsong").update(song);

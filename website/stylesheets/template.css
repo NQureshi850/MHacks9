@@ -183,8 +183,14 @@ h2 {
     text-shadow: 3px 3px rgba(0, 0, 0, 0.3);
 }
 
-#empty-list-item {
-    height: 80px; /* TODO: Fix this to be in em's. */
+#empty-top-list-item {
+    height: 2.6em;
+    margin-bottom: 5%;
+    margin-top: 1%;
+}
+
+#empty-bottom-list-item {
+    height: 2.6em;
     margin-bottom: 5%;
     margin-top: 1%;
 }

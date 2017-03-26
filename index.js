@@ -68,16 +68,14 @@ function removeUser(user) {
     }
 }
 
-// function getUser(id, ws) {
-//     for (var i = 0; i < users.length; i++) {
-//         if (id !== undefined && users[i].id === id) {
-//             return users[i];
-//         } else if (users[i].ws === ws) {
-//             return users[i];
-//         }
-//     }
-//     return null;
-// }
+function getUser(ws) {
+    for (var i = 0; i < users.length; i++) {
+        if (users[i].ws === ws) {
+            return users[i];
+        }
+    }
+    return null;
+}
 
 function sendStringifiedMessage(ws, message)
 {
@@ -151,23 +149,26 @@ wss.on("connection", function (ws)
 
     ws.on("message", function (data)
     {
-        console.log("connection message type1: ", data);
         var msg = JSON.parse(data);
         console.log("connection message type2: ", msg);
+        console.log("connection message readyState: ", ws.readyState);
 
         if (msg.type === "join")
         {
-            console.log("msg join");
+            console.log("new join");
             var u = new User(ws);
             scopeUser = u;
+            scopeUser.connected = true;
+            console.log(scopeUser.id);
 
             sendMessage(ws, null, "join");
             // sendMessage(ws, currentTime(), "sync");
         }
         else if (msg.type === "ping")
         {
+            console.log("connection message readyState: ", ws.readyState);
             console.log("msg ping");
-            // scopeUser.connected = true;
+            scopeUser.connected = true;
         }
 
         /*
@@ -192,9 +193,8 @@ wss.on("connection", function (ws)
 
     ws.on("close", function(e)
     {
-        console.error("close [ERROR]: ", e);
-        // if (getUser(scopeUser.id, scopeUser.ws) !== null)
-        //     disconnect(scopeUser);
+        if (getUser(scopeUser.ws) !== null)
+            disconnect(scopeUser);
     });
 });
 
@@ -203,19 +203,14 @@ wss.on("error", function(e)
     console.error("error [ERROR]: " + e);
 });
 
-setInterval(function ()
-{
-    for (var i = 0; i < users.length; i++)
-    {
-        var u = users[i];
-        if (u.connected === false)
-        {
-            disconnect(u);
-        }
-        else
-        {
-            // u.connected = false;
-            // sendMessage(u.ws, "ping");
-        }
-    }
-}, 1000);
+// setInterval(function () {
+//     for (var i = 0; i < users.length; i++) {
+//         var u = users[i];
+//         if (u.connected === false) {
+//             disconnect(u);
+//         } else {
+//             // u.connected = false;
+//             // sendMessage(u.ws, "ping");
+//         }
+//     }
+// }, 1000);

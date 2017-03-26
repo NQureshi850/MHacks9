@@ -2,6 +2,7 @@
 /* global database window WebSocket YT*/
 var player;
 var shouldMute = true;
+var socket;
 
 function start()
 {
@@ -261,6 +262,8 @@ function startTimer()
     {
         $("#music-player-time-played").text("0:00");
         $("#music-player-time-remaining").text("0:00");
+
+        socket.send(JSON.stringify({"type":"video-ended"}));
     }
     else
     {
@@ -271,7 +274,7 @@ function startTimer()
 
 function setupWebSocket()
 {
-    var socket = new WebSocket("ws://maxocull.com:9090");
+    socket = new WebSocket("ws://maxocull.com:9090");
 
     socket.onopen = function()
     {

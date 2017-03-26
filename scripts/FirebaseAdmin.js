@@ -23,9 +23,13 @@ var path2 = "Test/users/" + [userInfo2.uuid];
 ref.update({[path1]: userInfo});
 ref.update({[path2]: userInfo2});
 
-var songInfo = new roomInfo.Song("Neon Bible", "Arcade Fire", "Neon Bible", "79jgy0pJciw", "39fjq012j39gjwq9d", 0, userInfo, "img/arcadefireneonbible.jpg");
+/*var songInfo = new roomInfo.Song("Neon Bible", "Arcade Fire", "Neon Bible", "79jgy0pJciw", "39fjq012j39gjwq9d", 0, userInfo, "img/arcadefireneonbible.jpg");
 var pathSong1 = "Test/songs/" + [songInfo.id];
-ref.update({[pathSong1]: songInfo});
+ref.update({[pathSong1]: songInfo});*/
+
+var songInfo5 = new roomInfo.Song("Skin", "Flume", "3", "AiNqHRUWqI4", "zxciopwerlkasdf", 0, userInfo2, "http://images.genius.com/ccad3405e3a136e1b60d8939e581c7b4.1000x1000x1.jpg");
+var pathSong5 = "Test/songs/" + [songInfo5.id];
+ref.update({[pathSong5]: songInfo5});
 
 var songInfo2 = new roomInfo.Song("Velour", "Darius", "Road Trip", "8gT4DUC25PI", "dw2123hu2", 0, userInfo2, "http://i1.sndcdn.com/artworks-000036855150-vd3kt4-t500x500.jpg");
 var pathSong2 = "Test/songs/" + [songInfo2.id];
@@ -39,10 +43,6 @@ var songInfo4 = new roomInfo.Song("Drink the Sea", "The Glitch Mob", "Between Tw
 var pathSong4 = "Test/songs/" + [songInfo4.id];
 ref.update({[pathSong4]: songInfo4});
 
-var songInfo5 = new roomInfo.Song("Skin", "Flume", "3", "AiNqHRUWqI4", "zxciopwerlkasdf", 0, userInfo2, "http://images.genius.com/ccad3405e3a136e1b60d8939e581c7b4.1000x1000x1.jpg");
-var pathSong5 = "Test/songs/" + [songInfo5.id];
-ref.update({[pathSong5]: songInfo5});
-
 var songInfo6 = new roomInfo.Song("Gemini", "What So Not, George Maple", "Gemini", "F6nt3Sw3Isk", "ledoxlalaldopeep", 0, userInfo2, "https://images.genius.com/bcf7640e7dacf4be856049224a8ff292.1000x1000x1.jpg");
 var pathSong6 = "Test/songs/" + [songInfo6.id];
 ref.update({[pathSong6]: songInfo6});
@@ -52,11 +52,11 @@ var pathSong7 = "Test/songs/" + [songInfo7.id];
 ref.update({[pathSong7]: songInfo7});
 
 var songListInfo = new roomInfo.Songlist();
-songListInfo.addSong(songInfo);
+songListInfo.addSong(songInfo5);
+//songListInfo.addSong(songInfo);
 songListInfo.addSong(songInfo2);
 songListInfo.addSong(songInfo3);
 songListInfo.addSong(songInfo4);
-songListInfo.addSong(songInfo5);
 songListInfo.addSong(songInfo6);
 songListInfo.addSong(songInfo7);
 ref.update({"Test/currentsong": songListInfo.currentSong()});

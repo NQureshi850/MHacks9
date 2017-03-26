@@ -61,11 +61,17 @@ songListInfo.addSong(songInfo6);
 songListInfo.addSong(songInfo7);
 ref.update({"Test/currentsong": songListInfo.currentSong()});
 
-var position = songListInfo.songlist.indexOf(songInfo) + 1;
+/*var position = songListInfo.songlist.indexOf(songInfo) + 1;
 var newPath = "rooms/" + [pathSong1];
 var newRef = db.ref(newPath);
 
-newRef.update({"position": position});
+newRef.update({"position": position});*/
+
+var position4 = songListInfo.songlist.indexOf(songInfo5) + 1;
+var newPath4 = "rooms/" + [pathSong5];
+var newRef4 = db.ref(newPath4);
+
+newRef4.update({"position": position4});
 
 var position1 = songListInfo.songlist.indexOf(songInfo2) + 1;
 var newPath1 = "rooms/" + [pathSong2];
@@ -84,12 +90,6 @@ var newPath3 = "rooms/" + [pathSong4];
 var newRef3 = db.ref(newPath3);
 
 newRef3.update({"position": position3});
-
-var position4 = songListInfo.songlist.indexOf(songInfo5) + 1;
-var newPath4 = "rooms/" + [pathSong5];
-var newRef4 = db.ref(newPath4);
-
-newRef4.update({"position": position4});
 
 var position5 = songListInfo.songlist.indexOf(songInfo6) + 1;
 var newPath5 = "rooms/" + [pathSong6];

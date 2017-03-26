@@ -195,9 +195,11 @@ wss.on("connection", function (ws)
                           for(var j in songsObject)
                           {
                               var testSong1 = songsObject[j];
+                              console.log(testSong1.uuid);
                               nextSong.child(testSong1.uuid).update({"position" : testSong1.position - 1});
                           }
-                          database.ref("rooms/Test/songs/" + song.uuid).remove();
+                          console.log(song.uuid);
+                          //database.ref("rooms/Test/songs/" + song.uuid).remove();
                       }
                   }
                   if(song.found == 1)

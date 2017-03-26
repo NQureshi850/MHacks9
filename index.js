@@ -132,10 +132,12 @@ wss.on("connection", function (ws) {
         console.log("connection message type2: ", msg);
 
         if (msg.type === "join") {
+            console.log("msg join");
             var u = new User(ws);
             scopeUser = u;
             // sendMessage(ws, currentTime(), "sync");
         } else if (msg.type === "ping") {
+            console.log("msg ping");
             // scopeUser.connected = true;
         }
 

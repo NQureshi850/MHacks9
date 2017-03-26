@@ -7,8 +7,27 @@
         <title>QMusic Room</title>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-
         <script src="https://www.gstatic.com/firebasejs/3.7.3/firebase.js"></script>
+
+        <!-- Google API -->
+        <script>
+            window.youtubeDataAPIStatus = 'loading';
+            // Load up the Youtube Data API
+            function GoogleAPILoadCallback() {
+                gapi.client.setApiKey(config.apiKey);
+                gapi.client.load('youtube', 'v3', function() {
+                    try
+                    {
+                        var rootScope = angular.element($("html")).scope();
+                        rootScope.$broadcast('youtubeDataAPI.loaded');
+                    }
+                    catch(e) {}
+                    window.youtubeDataAPIStatus = 'ready';
+                });
+            }
+        </script>
+
+        <script src="https://www.youtube.com/player_api"></script>
         <script src="js/api.js"></script>
         <script src="js/template.js"></script>
 
@@ -25,8 +44,9 @@
             <input id="searchbar" type=text>
         </div>
         <div id="left">
-            <div style="visibility:hidden;" id="art-container">
-                <img/>
+            <div style="visibility:visible;" id="art-container">
+              <div id="youtubeplayer"></div>
+              <img />
             </div>
             <div style="visibility:hidden;" id="song-data">
                 <h1 id="song-title"> </h1>

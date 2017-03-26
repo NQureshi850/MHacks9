@@ -140,8 +140,16 @@ h2 {
 
 #art-container {
     margin: auto;
-    margin-top: 10%;
+    margin-top: 5%;
+    text-align: center;
+    justify-content: center;
     /*box-shadow: 5px 5px rgba(255, 255, 255, 0.5); /* x, y, blur, spread, color */
+}
+
+#youtubeplayer {
+    margin: auto;
+    display: flex;
+    max-height: 40%;
 }
 
 #art-container > img {

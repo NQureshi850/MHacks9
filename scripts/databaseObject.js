@@ -92,6 +92,11 @@ exports.Songlist = class Songlist
     removeSong()
     {
         this.currentSongList++;
+
+        if(this.currentSongList == this.songlist.length)
+        {
+            this.isEmpty = true;
+        }
     }
 
     addSong(toAdd)

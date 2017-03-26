@@ -1,5 +1,5 @@
 /* eslint-env jquery */
-/* global database window WebSocket*/
+/* global database window WebSocket YT*/
 
 $("document").ready(function()
 {
@@ -13,7 +13,7 @@ $("document").ready(function()
 
     var room = database.ref("rooms" + url);
     var songs = database.ref("rooms" + url + "/songs");
-    var currentSong = database.ref("rooms" + url + "/currentSong");
+    var currentSong = database.ref("rooms" + url + "/currentsong");
 
     room.once("value", function(snapshot)
     {
@@ -103,6 +103,7 @@ $("document").ready(function()
         for (var i in songsObject)
         {
             var song = songsObject[i];
+
             var songElement = $(children[song.position + 1]);
 
             songElement.attr("id", i);
@@ -114,7 +115,7 @@ $("document").ready(function()
             $(songData.childNodes[3]).text(song.artist);
             $(songData.childNodes[5]).text(song.album);
             $(songData.childNodes[7]).text(song.time);
-            $(songData.childNodes[9]).text(song.username);
+            $(songData.childNodes[9]).text(song.name);
 
             songElement.show();
         }
@@ -131,6 +132,25 @@ $("document").ready(function()
 
         $("#art-container").css("visibility", "visible");
         $("#song-data").css("visibility", "visible");
+
+        var player = new YT.Player("youtubeplayer", {
+            height: "360",
+            width: "640",
+            videoId: "TOu0kPPH4m0",
+            playerVars: {
+                "autoplay": 1,
+                "controls": 0,
+                "rel" : 0,
+                "disablekb":1,
+                "enablejsapi":1,
+                "fs":0,
+                "iv_load_policy":3,
+                "modestbranding":1,
+                "showinfo":0,
+                "cc_load_policy":0
+            }
+        });
+        console.log(player);
     });
 });
 

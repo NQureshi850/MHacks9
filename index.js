@@ -80,7 +80,11 @@ function removeUser(user) {
 // }
 
 function sendStringifiedMessage(ws, message) {
-    ws.send(message);
+    try {
+        ws.send(message);
+    } catch (e) {
+        console.log("[ERROR]: ", e);
+    }
 }
 
 function sendMessage(ws, text, type) {
@@ -100,7 +104,7 @@ function sendMessage(ws, text, type) {
 // }
 
 function broadcast(text, type) {
-    console.log("broadcast type of message: " + type);
+    console.log("broadcast type of message: ", type);
     var message = JSON.stringify({type: type});
     users.forEach(function (client) {
         // sendMessage(client.ws, text, type);
@@ -112,7 +116,7 @@ function disconnect(user) {
     try {
         user.ws.close();
     } catch (e) {
-        console.error("disconnect [ERROR]: " + e);
+        console.error("disconnect [ERROR]: ", e);
     }
     removeUser(user);
 }
@@ -141,6 +145,8 @@ wss.on("connection", function (ws) {
             console.log("msg join");
             var u = new User(ws);
             scopeUser = u;
+
+            sendMessage(ws, null, "join");
             // sendMessage(ws, currentTime(), "sync");
         } else if (msg.type === "ping") {
             console.log("msg ping");

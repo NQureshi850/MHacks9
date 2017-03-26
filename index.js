@@ -183,14 +183,14 @@ wss.on("error", function(e) {
     console.error("error [ERROR]: " + e);
 });
 
-setInterval(function () {
-    for (var i = 0; i < users.length; i++) {
-        var u = users[i];
-        if (u.connected === false) {
-            disconnect(u);
-        } else {
-            // u.connected = false;
-            // sendMessage(u.ws, "ping");
-        }
-    }
-}, 1000);
+// setInterval(function () {
+//     for (var i = 0; i < users.length; i++) {
+//         var u = users[i];
+//         if (u.connected === false) {
+//             disconnect(u);
+//         } else {
+//             // u.connected = false;
+//             // sendMessage(u.ws, "ping");
+//         }
+//     }
+// }, 1000);

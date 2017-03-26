@@ -140,19 +140,14 @@ wss.on("connection", function (ws) {
         console.log("connection message readyState: ", ws.readyState);
 
         if (msg.type === "join") {
-            if (getUser(-1, ws) == null) {
-                console.log("new join");
-                var u = new User(ws);
-                scopeUser = u;
-                scopeUser.connected = true;
-                console.log(scopeUser.id);
+            console.log("new join");
+            var u = new User(ws);
+            scopeUser = u;
+            scopeUser.connected = true;
+            console.log(scopeUser.id);
 
-                sendMessage(ws, null, "join");
-                // sendMessage(ws, currentTime(), "sync");
-            }
-            else {
-                console.log("already joined");
-            }
+            sendMessage(ws, null, "join");
+            // sendMessage(ws, currentTime(), "sync");
         } else if (msg.type === "ping") {
             console.log("connection message readyState: ", ws.readyState);
             console.log("msg ping");
@@ -179,9 +174,8 @@ wss.on("connection", function (ws) {
     });
 
     ws.on("close", function(e) {
-        console.error("close [ERROR]: ", e);
-        // if (getUser(scopeUser.id, scopeUser.ws) !== null)
-        //     disconnect(scopeUser);
+        if (getUser(scopeUser.ws) !== null)
+            disconnect(scopeUser);
     });
 });
 

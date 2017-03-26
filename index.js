@@ -209,7 +209,7 @@ wss.on("connection", function (ws)
                   if(song.found == 1)
                   {
                       database.ref("rooms/Test/songs/" + song.uuid).remove();
-                      database.ref("rooms/Test/currentSong").update(song);
+                      database.ref("rooms/Test/currentsong").update(song);
                       for(var j in songsArray)
                       {
                           var testSong = songsObject[j];

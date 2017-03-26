@@ -20,7 +20,7 @@ exports.Song = class Song
         this.url = url;
         this.id = id;
         this.source = source; // 0 for youtube, 1 for soundcloud
-        this.totalVote = 1;
+        this.votes = 1;
         this.skipVotes = 0;
         this.uuid = user.uuid;
         this.username = user.name;
@@ -35,7 +35,7 @@ exports.Song = class Song
 
     updateVote(val)
     {
-        this.totalVote += val;
+        this.votes += val;
     }
 
     updateLength(newVal)
@@ -54,7 +54,7 @@ exports.Song = class Song
         console.log(this.id);
         console.log(this.source);
         console.log(this.user);
-        console.log("Total Votes: " + this.totalVote);
+        console.log("votes: " + this.votes);
     }
 };
 

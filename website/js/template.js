@@ -1,6 +1,7 @@
 /* eslint-env jquery */
 /* global database window WebSocket YT*/
 var player;
+var shouldMute = true;
 
 $("document").ready(function()
 {
@@ -104,8 +105,6 @@ $("document").ready(function()
 
             var songElement = $(children[song.position + 1]);
 
-            console.log(rightContainer);
-
             songElement.attr("id", i);
             $(songElement.children()[0].childNodes[3]).text(song.votes);
 
@@ -128,7 +127,7 @@ $("document").ready(function()
         $("#song-title").text(songData.name);
         $("#song-artist").text(songData.artist);
         $("#song-album").text(songData.album);
-        $("#song-votes").text(songData.votes + " Votes");
+        $("#music-player-skip-vote-count").text(songData.skipVotes);
 
         $("#art-container").css("visibility", "visible");
         $("#song-data").css("visibility", "visible");
@@ -149,10 +148,38 @@ $("document").ready(function()
                 "modestbranding":1,
                 "rel" : 0,
                 "showinfo":0,
+            },
+            events: {
+                "onReady": onPlayerReady
             }
         });
     });
+
+    $("#music-player-mute").click(function()
+    {
+        shouldMute = !shouldMute;
+        $("#music-player-mute").attr("src", (shouldMute ? "mute" : "unmute"));
+        console.log("this");
+        if(shouldMute)
+        {
+            player.mute();
+        }
+        else
+        {
+            player.unmute();
+        }
+    });
+
+    $("#music-player-skip-button").click(function()
+    {
+        socket.send({"type":"skip-vote-update"});
+    });
 });
+
+function onPlayerReady(event)
+{
+    event.target.mute();
+}
 
 function setupWebSocket()
 {

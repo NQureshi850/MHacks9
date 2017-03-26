@@ -14,11 +14,10 @@ ref.once("value", function(snapshot)
     console.log(snapshot.val());
 });
 
-var userInfo = new roomInfo.User("bob", "234890fdsjfdsuifdsjafdsk");
+var userInfo = new roomInfo.User("Bob", "234890fdsjfdsuifdsjafdsk");
 var path1 = "Test/users/" + [userInfo.uuid];
 var userInfo2 = new roomInfo.User("Alice", "fdsa;jrew890u234jfdsu9");
 var path2 = "Test/users/" + [userInfo2.uuid];
-//console.log(typeof userInfo.uuid);
 ref.update({[path1]: userInfo});
 ref.update({[path2]: userInfo2});
 
@@ -29,6 +28,13 @@ ref.update({[pathSong1]: songInfo});
 var songListInfo = new roomInfo.Songlist();
 songListInfo.addSong(songInfo);
 ref.update({"Test/currentsong": songListInfo.currentSong()});
+
+var position = songListInfo.songlist.indexOf(songInfo) + 1;
+var newPath = "rooms/" + [pathSong1];
+var newRef = db.ref(newPath);
+
+newRef.update({"position": position});
+
 
 /*
 ref.update({"Test/currentSong/album": "Love"});

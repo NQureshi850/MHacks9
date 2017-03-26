@@ -79,15 +79,20 @@ function removeUser(user) {
 //     return null;
 // }
 
-function sendStringifiedMessage(ws, message) {
-    try {
+function sendStringifiedMessage(ws, message)
+{
+    try
+    {
         ws.send(message);
-    } catch (e) {
+    }
+    catch (e)
+    {
         console.log("[ERROR]: ", e);
     }
 }
 
-function sendMessage(ws, text, type) {
+function sendMessage(ws, text, type)
+{
     ws.send(JSON.stringify({type: type}));
 }
 
@@ -103,19 +108,25 @@ function sendMessage(ws, text, type) {
 //     return list;
 // }
 
-function broadcast(text, type) {
+function broadcast(text, type)
+{
     console.log("broadcast type of message: ", type);
     var message = JSON.stringify({type: type});
-    users.forEach(function (client) {
+    users.forEach(function (client)
+    {
         // sendMessage(client.ws, text, type);
         sendStringifiedMessage(client.ws, message);
     });
 }
 
-function disconnect(user) {
-    try {
+function disconnect(user)
+{
+    try
+    {
         user.ws.close();
-    } catch (e) {
+    }
+    catch (e)
+    {
         console.error("disconnect [ERROR]: ", e);
     }
     removeUser(user);
@@ -127,28 +138,34 @@ function disconnect(user) {
 //     return "[" + name + " | " + timeStr + "] " + message;
 // }
 
-function currentTime() {
+function currentTime()
+{
     return null;
 }
 
 
-wss.on("connection", function (ws) {
+wss.on("connection", function (ws)
+{
     console.log("connection");
     var scopeUser;
 
-    ws.on("message", function (data) {
+    ws.on("message", function (data)
+    {
         console.log("connection message type1: ", data);
         var msg = JSON.parse(data);
         console.log("connection message type2: ", msg);
 
-        if (msg.type === "join") {
+        if (msg.type === "join")
+        {
             console.log("msg join");
             var u = new User(ws);
             scopeUser = u;
 
             sendMessage(ws, null, "join");
             // sendMessage(ws, currentTime(), "sync");
-        } else if (msg.type === "ping") {
+        }
+        else if (msg.type === "ping")
+        {
             console.log("msg ping");
             // scopeUser.connected = true;
         }
@@ -168,27 +185,35 @@ wss.on("connection", function (ws) {
         */
     });
 
-    ws.on("error", function(e) {
+    ws.on("error", function(e)
+    {
         console.error("error [ERROR]: ", e);
     });
 
-    ws.on("close", function(e) {
+    ws.on("close", function(e)
+    {
         console.error("close [ERROR]: ", e);
         // if (getUser(scopeUser.id, scopeUser.ws) !== null)
         //     disconnect(scopeUser);
     });
 });
 
-wss.on("error", function(e) {
+wss.on("error", function(e)
+{
     console.error("error [ERROR]: " + e);
 });
 
-setInterval(function () {
-    for (var i = 0; i < users.length; i++) {
+setInterval(function ()
+{
+    for (var i = 0; i < users.length; i++)
+    {
         var u = users[i];
-        if (u.connected === false) {
+        if (u.connected === false)
+        {
             disconnect(u);
-        } else {
+        }
+        else
+        {
             // u.connected = false;
             // sendMessage(u.ws, "ping");
         }

@@ -9,7 +9,7 @@ const express = require("express");
 const firebase = require("./scripts/FirebaseAdmin.js");
 
 // define a port we want to listen to
-const PORT=8080;
+const PORT=8880;
 
 var app = express();
 

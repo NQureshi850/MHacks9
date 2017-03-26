@@ -68,16 +68,16 @@ function removeUser(user) {
     }
 }
 
-function getUser(id, ws) {
-    for (var i = 0; i < users.length; i++) {
-        if (id !== undefined && users[i].id === id) {
-            return users[i];
-        } else if (users[i].ws === ws) {
-            return users[i];
-        }
-    }
-    return null;
-}
+// function getUser(id, ws) {
+//     for (var i = 0; i < users.length; i++) {
+//         if (id !== undefined && users[i].id === id) {
+//             return users[i];
+//         } else if (users[i].ws === ws) {
+//             return users[i];
+//         }
+//     }
+//     return null;
+// }
 
 function sendMessage(ws, text, type) {
     ws.send(JSON.stringify({type: type}));
@@ -135,7 +135,7 @@ wss.on("connection", function (ws) {
             scopeUser = u;
             // sendMessage(ws, currentTime(), "sync");
         } else if (msg.type === "ping") {
-            scopeUser.connected = true;
+            // scopeUser.connected = true;
         }
 
         /*
@@ -158,8 +158,9 @@ wss.on("connection", function (ws) {
     });
 
     ws.on("close", function(e) {
-        if (getUser(scopeUser.id, scopeUser.ws) !== null)
-            disconnect(scopeUser);
+        console.error("[ERROR]: " + e);
+        // if (getUser(scopeUser.id, scopeUser.ws) !== null)
+        //     disconnect(scopeUser);
     });
 });
 
@@ -173,8 +174,8 @@ setInterval(function () {
         if (u.connected === false) {
             disconnect(u);
         } else {
-            u.connected = false;
-            sendMessage(u.ws, "ping");
+            // u.connected = false;
+            // sendMessage(u.ws, "ping");
         }
     }
 }, 1000);

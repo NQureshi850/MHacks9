@@ -3,6 +3,7 @@
 var player;
 var shouldMute = true;
 var socket;
+var doPause = true;
 
 function start()
 {
@@ -148,7 +149,8 @@ function initialize()
 
         if(songData.source == 0)
         {
-            player.cueVideoById(songData.url);
+            doPause = true;
+            player.loadVideoById(songData.url);
             $("#youtubeplayer").css("visibility", "visible");
             $("#music-player-progress-bar-value").width("0%");
         }
@@ -248,6 +250,10 @@ function onStateChange(event)
         //$("#music-player-progress-bar-value").animate({width:"100%"}, player.getDuration() * 1000);
         startTimer();
     }
+    if(event.data == 3 && doPause)
+    {
+        player.pauseVideo();
+    }
 }
 
 function startTimer()
@@ -291,7 +297,10 @@ function setupWebSocket()
     {
         var message = JSON.parse(e.data);
         if(message.type == "sync")
+        {
+            doPause = false;
             player.playVideo();
+        }
     };
 
     window.onbeforeunload = function()

@@ -68,16 +68,16 @@ function removeUser(user) {
     }
 }
 
-// function getUser(id, ws) {
-//     for (var i = 0; i < users.length; i++) {
-//         if (id !== undefined && users[i].id === id) {
-//             return users[i];
-//         } else if (users[i].ws === ws) {
-//             return users[i];
-//         }
-//     }
-//     return null;
-// }
+function getUser(ws) {
+    for (var i = 0; i < users.length; i++) {
+        if (id !== undefined && users[i].id === id) {
+            return users[i];
+        } else if (users[i].ws === ws) {
+            return users[i];
+        }
+    }
+    return null;
+}
 
 function sendStringifiedMessage(ws, message) {
     try {
@@ -137,20 +137,24 @@ wss.on("connection", function (ws) {
     var scopeUser;
 
     ws.on("message", function (data) {
-        console.log("connection message type1: ", data);
         var msg = JSON.parse(data);
         console.log("connection message type2: ", msg);
         console.log("connection message readyState: ", ws.readyState);
 
         if (msg.type === "join") {
-            console.log("msg join");
-            var u = new User(ws);
-            console.log(u.id);
-            scopeUser = u;
-            scopeUser.connected = true;
+            if (getUser(-1, ws) != null) {
+                console.log("new join");
+                var u = new User(ws);
+                console.log(u.id);
+                scopeUser = u;
+                scopeUser.connected = true;
 
-            sendMessage(ws, null, "join");
-            // sendMessage(ws, currentTime(), "sync");
+                sendMessage(ws, null, "join");
+                // sendMessage(ws, currentTime(), "sync");
+            }
+            else {
+                console.log("already joined");
+            }
         } else if (msg.type === "ping") {
             console.log("connection message readyState: ", ws.readyState);
             console.log("msg ping");

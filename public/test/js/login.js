@@ -1,6 +1,8 @@
 /* global firebase:false, ui:false, uiConfig:false */
 
-var displayDiv;
+var room = {};
+
+// var displayDiv;
 var logoutButton;
 var displayNameButton;
 
@@ -13,7 +15,7 @@ function logout() {
 }
 
 function initHtml() {
-    displayDiv = document.getElementById("display");
+    // displayDiv = document.getElementById("display");
     logoutButton = document.getElementById("firebase-auth-logout");
     displayNameButton = document.getElementById("display-name-button");
 
@@ -41,12 +43,21 @@ function getOrCreateUser(callback) {
     }
 }
 
-function setDisplayNameWithUser(user) {
+function redirectToRoom(user, found) {
     let db = firebase.database();
     let ref;
 
+    console.log(found);
+
     if (user.isAnonymous) {
-        ref = db.ref("/users/anon/" + user.uid);
+        if (!found) {
+            // only signed in users can create rooms
+            alert("only signed in users can create rooms");
+            return;
+        }
+        else {
+            ref = db.ref("/users/anon/" + user.uid);
+        }
     }
     else {
         ref = db.ref("/users/uid/" + user.uid);
@@ -56,15 +67,33 @@ function setDisplayNameWithUser(user) {
     let name = displayNameInput.value;
 
     ref.update({displayName: name}).then(function() {
-        displayDiv.appendChild(document.createTextNode(name));
-        displayDiv.appendChild(document.createElement("br"));
+        // displayDiv.appendChild(document.createTextNode(name));
+        // displayDiv.appendChild(document.createElement("br"));
 
-        setTitleName(name);
+        // setTitleName(name);
+        location.href = "/room/" + room.value;
+    });
+}
+
+function roomExists(roomName, callback) {
+    let db = firebase.database();
+    let ref = db.ref("/rooms");
+    ref.once("value").then(function(snapshot) {
+        callback(snapshot.val()[roomName] != undefined);
     });
 }
 
 function setDisplayName() {
-    getOrCreateUser(setDisplayNameWithUser);
+    let displayNameInput = document.getElementById("display-name-input");
+    let name = displayNameInput.value;
+
+    if (name != "") {
+        roomExists(room.value, function(found) {
+            getOrCreateUser(function(user) {
+                redirectToRoom(user, found);
+            });
+        });
+    }
 }
 
 function initAuth() {
@@ -78,13 +107,13 @@ function initAuth() {
                     // accessToken: accessToken
                 };
 
-                let text = JSON.stringify(obj, null, 4);
-
-                displayDiv.appendChild(document.createTextNode(text));
-                displayDiv.appendChild(document.createElement("br"));
+                // let text = JSON.stringify(obj, null, 4);
+                //
+                // displayDiv.appendChild(document.createTextNode(text));
+                // displayDiv.appendChild(document.createElement("br"));
             });
 
-            getUsername(user, setTitleName);
+            // getUsername(user, setTitleName);
 
             // user is signed in anonymously
             if (isAnon) {
@@ -113,6 +142,7 @@ function init() {
     initAuth();
 }
 
+/*
 function getUsername(user, callback) {
     let db = firebase.database();
     let dynamRef = "/users/uid";
@@ -123,8 +153,6 @@ function getUsername(user, callback) {
 
     let ref = db.ref(dynamRef + user.uid);
 
-    console.log("test");
-
     ref.once("value", function(dataSnapshot) {
         if (dataSnapshot.val() != null && dataSnapshot.val().displayName != undefined) {
             callback(dataSnapshot.val().displayName);
@@ -134,11 +162,12 @@ function getUsername(user, callback) {
     //     callback(dataSnapshot);
     // });
 }
+*/
 
-function setTitleName(name) {
-    let title = document.getElementById("title");
-    title.innerHTML = "Welcome to My Awesome App, " + name;
-}
+// function setTitleName(name) {
+//     let title = document.getElementById("title");
+//     title.innerHTML = "Welcome to My Awesome App, " + name;
+// }
 
 window.addEventListener("load", function() {
     init();

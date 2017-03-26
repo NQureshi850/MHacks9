@@ -140,17 +140,20 @@ wss.on("connection", function (ws) {
         console.log("connection message type1: ", data);
         var msg = JSON.parse(data);
         console.log("connection message type2: ", msg);
+        console.log("connection message readyState: ", ws.readyState);
 
         if (msg.type === "join") {
             console.log("msg join");
             var u = new User(ws);
             scopeUser = u;
+            scopeUser.connected = true;
 
             sendMessage(ws, null, "join");
             // sendMessage(ws, currentTime(), "sync");
         } else if (msg.type === "ping") {
+            console.log("connection message readyState: ", ws.readyState);
             console.log("msg ping");
-            // scopeUser.connected = true;
+            scopeUser.connected = true;
         }
 
         /*

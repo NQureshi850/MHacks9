@@ -34,22 +34,3 @@ var newPath = "rooms/" + [pathSong1];
 var newRef = db.ref(newPath);
 
 newRef.update({"position": position});
-
-
-/*
-ref.update({"Test/currentSong/album": "Love"});
-ref.update({"Test/currentSong/artist": "Arcade Fire"});
-ref.update({"Test/currentSong/imgSrc": "\"img/arcadefireneonbible.jpg\""});
-ref.update({"Test/currentSong/name": "Neon Bible"});
-ref.update({"Test/currentSong/skipVotes": "0"});
-ref.update({"Test/currentSong/votes": "0"});
-
-ref.update({"Test/name" : "Test Room"});
-
-ref.update({"Test/songs/album": "Love"});
-ref.update({"Test/songs/artist": "Arcade Fire"});
-ref.update({"Test/songs/imgSrc": "\"img/arcadefireneonbible.jpg\""});
-ref.update({"Test/songs/name": "Neon Bible"});
-ref.update({"Test/songs/skipVotes": "0"});
-ref.update({"Test/songs/votes": "0"});
-*/

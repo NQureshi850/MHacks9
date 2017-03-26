@@ -7,9 +7,28 @@
         <title>QMusic Room</title>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-
         <script src="https://www.gstatic.com/firebasejs/3.7.3/firebase.js"></script>
-        <script src="../api.js"></script>
+
+        <!-- Google API -->
+        <script>
+            window.youtubeDataAPIStatus = 'loading';
+            // Load up the Youtube Data API
+            function GoogleAPILoadCallback() {
+                gapi.client.setApiKey(config.apiKey);
+                gapi.client.load('youtube', 'v3', function() {
+                    try
+                    {
+                        var rootScope = angular.element($("html")).scope();
+                        rootScope.$broadcast('youtubeDataAPI.loaded');
+                    }
+                    catch(e) {}
+                    window.youtubeDataAPIStatus = 'ready';
+                });
+            }
+        </script>
+
+        <script src="https://www.youtube.com/player_api"></script>
+        <script src="js/api.js"></script>
         <script src="js/template.js"></script>
 
         <!-- TODO: Slim the fonts down (currently all) -->
@@ -17,13 +36,17 @@
         <link rel="stylesheet" type="text/css" href="stylesheets/template.css" />
     </head>
     <body>
+        <div id="room-info">
+            <h1 id="room-name">  </h1>
+            <h2 id="room-code">  </h2>
+        </div>
+        <div id="searchbar-container">
+            <input id="searchbar" type=text>
+        </div>
         <div id="left">
-            <div id="room-info">
-                <h1 id="room-name">  </h1>
-                <h2 id="room-code">  </h2>
-            </div>
-            <div style="visibility:hidden;" id="art-container">
-                <img/>
+            <div style="visibility:visible;" id="art-container">
+              <div id="youtubeplayer"></div>
+              <img />
             </div>
             <div style="visibility:hidden;" id="song-data">
                 <h1 id="song-title"> </h1>
@@ -34,17 +57,26 @@
                 </div>
             </div>
             <div id="music-player">
-                <input id="music-player-play-pause" type="image" src="img/play.png" alt="Play" width="50" height="50">
+                <input class="music-player-play-pause" type="image" src="img/play.png" alt="Play" width="40" height="40"/>
+                <img class="music-player-skip-button" src="img/skip.png" width="40" height="40"/>
                 <div class="music-player-skip-vote">
-                    <input class="music-player-skip-vote-up" type="image" src="img/upvote.png" alt="+" width="20" height="10">
-                    <div class="music-player-skip-vote-count"> 314 </div>
-                    <input class="music-player-skip-vote-down" type="image" src="img/downvote.png" alt="-" width="20" height="10">
+                    <input class="music-player-skip-vote-up" type="image" src="img/upvote.png" alt="+" width="20" height="10"/>
+                    <div class="music-player-skip-vote-count"> 7 </div>
+                    <input class="music-player-skip-vote-down" type="image" src="img/downvote.png" alt="-" width="20" height="10"/>
+                </div>
+                <input class="music-player-mute" type="image" src="img/mute.png" alt="Mute" width="40" height="40" />
+                <div class="music-player-time-indicator">
+                    <div class="music-player-time-played"> 0:37 </div>
+                    <div class="music-player-progress-bar">
+                        <div class="music-player-progress-bar-value" style="height: 100%; width: 61.6%; background-color: #F0F0F0;"> </div>
+                    </div>
+                    <div class="music-player-time-remaining"> -0:23 </div>
                 </div>
             </div>
 
         </div>
         <div id="right">
-            <div id="empty-list-item"> </div>
+            <div id="empty-top-list-item"> </div>
             <div id="clone-song" class="list-item">
                 <div class="item-vote">
                     <input class="item-vote-up" type="image" src="img/upvote.png" alt="+" width="20" height="10">
@@ -57,9 +89,9 @@
                     <div class="item-album"> No Album </div> /
                     <div class="item-duration"> 3:38 </div> /
                     <div class="item-user"> kleclain </div>
-                    <!--<div class="item-uuid" style="display: none;"> a95jf9302kf92 </div> -->
                 </div>
             </div>
+            <div id="empty-bottom-list-item"> </div>
         </div>
     </body>
 </html>

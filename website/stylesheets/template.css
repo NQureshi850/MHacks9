@@ -79,6 +79,30 @@ h2 {
     font-size: 0.8em;
 }
 
+.music-player-play-pause, .music-player-skip-button, .music-player-skip-vote,
+.music-player-time-played, .music-player-progress-bar,
+.music-player-time-remaining {
+    display: inline-block;
+}
+
+.music-player-skip-button, .music-player-time-indicator, .music-player-mute {
+    margin-left: 1em;
+}
+
+.music-player-time-indicator {
+    margin-top: 1em;
+    display: block;
+}
+
+.music-player-progress-bar {
+    width: 50%;
+    height: 0.2em;
+    background-color: #000000;
+    margin-bottom: 0.25em;
+    margin-right: 1em;
+    margin-left: 1em;
+}
+
 /*.item-artist, .item-album {
     padding-right: 1em;
 }*/
@@ -116,8 +140,16 @@ h2 {
 
 #art-container {
     margin: auto;
-    margin-top: 10%;
+    margin-top: 5%;
+    text-align: center;
+    justify-content: center;
     /*box-shadow: 5px 5px rgba(255, 255, 255, 0.5); /* x, y, blur, spread, color */
+}
+
+#youtubeplayer {
+    margin: auto;
+    display: flex;
+    max-height: 40%;
 }
 
 #art-container > img {
@@ -132,26 +164,26 @@ h2 {
 #room-info {
     position: fixed;
     top: 0;
-    right: 0;
-    width: 33%;
+    right: 1.5%;
+    width: 31.5%;
+    overflow: hidden;
     background-color: #181818;
     /* TODO: Covers scroll bar, fix that. */
-}
-
-#room-code {
-    margin-bottom: 5%;
-    padding-left: 2%;
-/*    padding-right: 2%;*/
-    text-align: left;
-/*    box-shadow: 0 2px 5px 0px rgba(0, 0, 0, 0.3);*/
-/*  box-shadow: -2px 7px 5px 0px rgba(0, 0, 0, 0.3);*/
+    /* Update: Fix the hack. */
 }
 
 #room-name {
     padding-left: 2%;
     text-align: left;
-/*    padding-right: 2%;*/
+    display: inline;
     text-shadow: 3px 3px rgba(0, 0, 0, 0.3);
+}
+
+#room-code {
+    margin-bottom: 5%;
+    padding-left: 2%;
+    text-align: left;
+    display: inline;
 }
 
 #song-title {
@@ -159,10 +191,38 @@ h2 {
     text-shadow: 3px 3px rgba(0, 0, 0, 0.3);
 }
 
-#empty-list-item {
-  height: 80px; /* TODO: Fix this to be in em's. */
-  margin-bottom: 5%;
-  margin-top: 1%;
+#empty-top-list-item {
+    height: 2.6em;
+    margin-bottom: 5%;
+    margin-top: 1%;
+}
+
+#empty-bottom-list-item {
+    height: 2.6em;
+    margin-bottom: 5%;
+    margin-top: 1%;
+}
+
+#music-player {
+    text-align: center;
+}
+
+#searchbar-container {
+    position: fixed;
+    bottom: 0;
+    right: 1.5%;
+    width: 31.5%;
+    overflow: hidden;
+    background-color: #181818;
+}
+
+#searchbar {
+    width: 70%;
+    font-size: 2em;
+    margin: 1em;
+    font-style: normal;
+    font-weight: normal;
+    font-family: "Source Sans Pro", arial, sans-serif;
 }
 
 /* EFFECTS */
@@ -177,35 +237,9 @@ h2 {
 .huerotate {-webkit-filter: hue-rotate(180deg); filter: hue-rotate(180deg);}
 .rss.opacity {-webkit-filter: opacity(50%); filter: opacity(50%);}
 
-/***********************************************//*
-
-#container {
-  position:absolute;
-  right: 0%;
-  top: 10%;
-  width: 33%;
-  min-width: 500px;
-  height: 80%;
+::selection {
+  background: #888888; /* WebKit/Blink Browsers */
 }
-
-#scrollbox {
-  position: absolute;
-  right: 0;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  margin: 0px auto;
-  overflow: auto;
-  overflow-x: hidden;
+::-moz-selection {
+  background: #888888; /* Gecko Browsers */
 }
-
-#container > p {
-    background: #eee;
-    color: #666;
-    font-family: Arial, sans-serif;
-    font-size: 0.75em;
-    padding: 5px;
-    margin: 0;
-    text-align: right;
-}
-*/

@@ -144,6 +144,7 @@ function initialize()
         {
             player.loadVideoById(songData.url);
             $("#youtubeplayer").css("visibility", "visible");
+            $("#music-player-progress-bar-value").css("width", "0%");
         }
     });
 
@@ -222,7 +223,8 @@ function onYouTubeIframeAPIReady()
             "showinfo":0,
         },
         events: {
-            "onReady": onPlayerReady
+            "onReady": onPlayerReady,
+            "onStateChange" : onStateChange
         }
     });
     $("#youtubeplayer").css("visibility", "hidden");
@@ -231,6 +233,33 @@ function onYouTubeIframeAPIReady()
 function onPlayerReady(event)
 {
     start();
+}
+
+function onStateChange(event)
+{
+    if(event.data == 1)
+    {
+        $("#music-player-progress-bar-value").animate({width:"100%"}, player.getDuration() * 1000);
+        startTimer();
+    }
+}
+
+function startTimer()
+{
+    var time = parseInt(player.getCurrentTime(), 10);
+    $("#music-player-time-played").text(parseInt((time / 60), 10) + ":" + (time % 60 < 10 ? "0" : "") + (time % 60));
+
+    time = parseInt(player.getDuration() - player.getCurrentTime(), 10);
+    if(time < 1)
+    {
+        $("#music-player-time-played").text("0:00");
+        $("#music-player-time-remaining").text("0:00");
+    }
+    else
+    {
+        $("#music-player-time-remaining").text("-" + parseInt((time / 60), 10) + ":" + (time % 60 < 10 ? "0" : "") + (time % 60));
+        setTimeout(startTimer, 1000);
+    }
 }
 
 function setupWebSocket()

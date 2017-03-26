@@ -34,7 +34,7 @@ $("document").ready(function()
             {
                 var element = this.parentNode.parentNode;
 
-                var mode = (this.src == "img/upvoteClicked.png" ? 0 : 1);
+                var mode = (this.src == "img/upvoteClicked.png" ? -1 : 1);
                 mode += (this.parentNode.childNodes[7].src == "img/downvoteClicked.png" ? 2 : 0);
 
                 if(mode == 2)
@@ -42,12 +42,16 @@ $("document").ready(function()
                     this.parentNode.childNodes[7].src = "img/downvote.png";
                 }
 
-                this.src = "img/upvoteClicked.png";
-
-                if(mode > 0)
+                if(mode != -1)
                 {
-                    room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes + mode});
+                    this.src = "img/upvoteClicked.png";
                 }
+                else
+                {
+                    this.src = "img/upvote.png";
+                }
+
+                room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes + mode});
             });
 
             $(songData.childNodes[7]).click(function()
@@ -55,19 +59,23 @@ $("document").ready(function()
                 var element = this.parentNode.parentNode;
 
                 var mode = (this.parentNode.childNodes[1].src == "img/upvoteClicked.png" ? 2 : 0);
-                mode += (this.src == "img/downvoteClicked.png" ? 0 : 1);
+                mode += (this.src == "img/downvoteClicked.png" ? -1 : 1);
 
                 if(mode == 2)
                 {
                     this.parentNode.childNodes[7].src = "img/upvote.png";
                 }
 
-                this.src = "img/downvoteClicked.png";
-
-                if(mode > 0)
+                if(mode != -1)
                 {
-                    room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes + mode});
+                    this.src = "img/downvoteClicked.png";
                 }
+                else
+                {
+                    this.src = "img/downvote.png";
+                }
+
+                room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes - mode});
             });
 
             $(copy).appendTo($("#right"));

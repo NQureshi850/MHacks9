@@ -1,5 +1,4 @@
-var exports = module.exports = {};
-exports.theObject = class databaseObject
+class DatabaseObject
 {
     constructor(title, code, arraySong, arrayUser)
     {
@@ -8,11 +7,11 @@ exports.theObject = class databaseObject
         this.songQueue = arraySong;
         this.arrayUser = arrayUser;
     }
-};
+}
 
-exports.Song = class Song
+class Song
 {
-    constructor(album, artist, name, url, id, source, user, image)
+    constructor(album, artist, name, url, id, source, user)
     {
         this.album = album;
         this.artist = artist;
@@ -22,10 +21,9 @@ exports.Song = class Song
         this.source = source; // 0 for youtube, 1 for soundcloud
         this.totalVote = 1;
         this.skipVotes = 0;
-        this.uuid = user.uuid;
-        this.username = user.name;
+        this.user = user;
         this.time = 0;  // in seconds
-        this.img = image;
+        this.img = url;
     }
 
     updateSkipVote(val)
@@ -56,9 +54,9 @@ exports.Song = class Song
         console.log(this.user);
         console.log("Total Votes: " + this.totalVote);
     }
-};
+}
 
-exports.Songlist = class Songlist
+class Songlist
 {
     constructor()
     {
@@ -108,9 +106,9 @@ exports.Songlist = class Songlist
         var curr = this.currentSong();
         curr.printSong();
     }
-};
+}
 
-exports.User = class User
+class User
 {
     constructor(name, uuid)
     {
@@ -131,17 +129,4 @@ exports.User = class User
     {
         this.skipVote = (this.skipVote + 1)%2;
     }
-};
-
-/*
-const mySonglist = new Songlist();
-const myUser = new User("bob", 10);
-const song = new Song("testName", "testArtist", "testUrl", 5, 1, myUser);
-myUser.uploadedSongs.push(song);
-myUser.changeVote();
-song.updateVote(myUser.skipVote * 2 - 1);
-
-mySonglist.addSong(song);
-
-mySonglist.printSong();
-*/
+}

@@ -1,5 +1,6 @@
 
 // libraries
+const WebSocketServer = require('ws').Server;
 const express = require("express");
 //const http = require("http");
 //const fs = require("fs");
@@ -16,6 +17,61 @@ var app = express();
 app.use(express.static("public"));
 
 app.listen(PORT);
+
+serverSocket = new WebSocketServer({ port: 9090});
+
+serverSocket.on('connection', function (socket)
+{
+    var scopeUser;
+
+    socket.on("message", function(data)
+    {
+        console.log(data);
+    });
+
+    socket.on('error', function(e)
+    {
+        console.error('[ERROR]: ' + e);
+    });
+
+    ws.on('close', function(e)
+    {
+        if (getUser(scopeUser.name, scopeUser.id) !== null)
+        {
+            disconnect(scopeUser);
+        }
+    });
+};
+
+function disconnect(user)
+{
+    var name = user.name;
+
+    try
+    {
+        user.ws.close();
+    }
+    catch (e)
+    {
+        console.error('[ERROR]: ' + e);
+    }
+
+    removeUser(user);
+
+    console.log('User ' + name + ' has disconnected.');
+    console.log('Users online: ' + userList() + '.');
+}
+
+function removeUser(user)
+{
+    var i = users.indexOf(user);
+
+    if (i > -1)
+    {
+        users[i] = null;
+        users.splice(i, 1);
+    }
+}
 
 /*
 function createWriteToResponse(response) {

@@ -24,14 +24,57 @@ $("document").ready(function()
         var songsArray = Object.keys(songsObject);
         var rightContainer = $("#right");
         var children = rightContainer.children();
-        while(children.length - 2 <= songsArray.length + 30)
+        while(children.length - 1 <= songsArray.length)
         {
             var copy = children[1].cloneNode(true);
+            console.log(children);
+            var songData = $(copy).children()[0];
+
+            $(songData.childNodes[1]).click(function()
+            {
+                var element = this.parentNode.parentNode;
+
+                var mode = (this.src == "img/upvoteClicked.png" ? 0 : 1);
+                mode += (this.parentNode.childNodes[7].src == "img/downvoteClicked.png" ? 2 : 0);
+
+                if(mode == 2)
+                {
+                    this.parentNode.childNodes[7].src = "img/downvote.png";
+                }
+
+                this.src = "img/upvoteClicked.png";
+
+                if(mode > 0)
+                {
+                    room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes + mode});
+                }
+            });
+
+            $(songData.childNodes[7]).click(function()
+            {
+                var element = this.parentNode.parentNode;
+
+                var mode = (this.parentNode.childNodes[1].src == "img/upvoteClicked.png" ? 2 : 0);
+                mode += (this.src == "img/downvoteClicked.png" ? 0 : 1);
+
+                if(mode == 2)
+                {
+                    this.parentNode.childNodes[7].src = "img/upvote.png";
+                }
+
+                this.src = "img/downvoteClicked.png";
+
+                if(mode > 0)
+                {
+                    room.child("songs").child(element.id).update({"votes":songsObject[element.id].votes + mode});
+                }
+            });
+
             $(copy).appendTo($("#right"));
             children = $("#right").children();
         }
 
-        while(children.length - 2 > songsArray.length + 30)
+        while(children.length - 2 > songsArray.length)
         {
             children[children.length - 2].remove();
             children = $("#right").children();
@@ -47,8 +90,8 @@ $("document").ready(function()
             songElement.attr("id", i);
             $(songElement.children()[0].childNodes[5]).text(song.votes);
 
-            var songData = songElement.children()[1];
-            console.log(songData.childNodes[3]);
+            songData = songElement.children()[1];
+
             $(songData.childNodes[1]).text(song.name);
             $(songData.childNodes[3]).text(song.artist);
             $(songData.childNodes[5]).text(song.album);

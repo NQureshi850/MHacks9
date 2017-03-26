@@ -28,12 +28,18 @@ app.listen(PORT);
 
 const db = firebase.db;
 
+var globalTimeout = null;
+
 const ref = db.ref("/rooms/Test/currentsong/");
 ref.on("value", function(snapshot) {
     console.log("current song changed");
+    if (globalTimeout !== null) {
+        clearTimeout(globalTimeout);
+    }
     setTimeout(function () {
         broadcast(true, "sync");
-    }, 7000);
+        globalTimeout = null;
+    }, 3000);
 });
 
 

@@ -1,6 +1,6 @@
 var admin = require("firebase-admin");
 var serviceAccount = require("./serviceAccountKey.json");
-var roomInfo = require("./databaseObject.js");
+// var roomInfo = require("./databaseObject.js");
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -8,8 +8,16 @@ admin.initializeApp({
 });
 
 var db = admin.database();
-var ref = db.ref("restricted_access/secret_document");
-ref.once("value", function(snapshot)
-{
-    console.log(snapshot.val());
-});
+
+/*
+var uid = [];
+for (var i = 0; i < uid.length; i++) {
+    admin.auth().deleteUser(uid[i])
+        .then(function() {
+            console.log("Successfully deleted user");
+        })
+        .catch(function(error) {
+            console.log("Error deleting user:", error);
+        });
+}
+*/

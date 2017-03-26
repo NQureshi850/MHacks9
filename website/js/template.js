@@ -3,6 +3,7 @@
 
 $("document").ready(function()
 {
+
     var url = window.location.pathname;
     url = url.substring(url.lastIndexOf("/"), url.lastIndexOf("."));
 
